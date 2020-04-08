@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,10 +6,13 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+    ScrollView,
   Image,
 } from 'react-native';
 import {connect} from 'react-redux';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import {bindActionCreators} from 'redux';
+import {fetchProducts} from '../redux/actions/actionCreators';
 
 const tempData = [
   {
@@ -75,7 +78,59 @@ const tempData = [
 ];
 
 const ItemsScreen = props => {
-  const [value, onChangeText] = React.useState('');
+  const [value, onChangeText] = useState('');
+
+  useEffect(() => {
+    props.fetchProducts();
+  }, []);
+
+  if (props.isLoading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text>Loading</Text>
+      </View>
+    );
+  }
+
+  // const renderTest = (product, item) => {
+  //   console.log(product);
+  //   return product.map(val => {
+  //     return (
+  //       <View style={styles.ingredient}>
+  //         <View style={styles.imageAndDetails}>
+  //           <Image
+  //             style={styles.ingredientImage}
+  //             source={require('../assets/randomImage.png')}
+  //           />
+  //           <View style={styles.ingredientDetails}>
+  //             <View>
+  //               <Text style={styles.ingredientName}>{val.productName && val.productName}</Text>
+  //               <Text style={styles.ingredientWeight}>{val.quantitySize && val.quantitySize}</Text>
+  //             </View>
+  //             <Text style={styles.ingredientAmount}>
+  //               $ {item.amount}/packet
+  //             </Text>
+  //           </View>
+  //         </View>
+  //         <View style={styles.addSubtractIngredient}>
+  //           <TouchableOpacity>
+  //             <Image
+  //               style={styles.incrDecrIcon}
+  //               source={require('../assets/plusIcon.png')}
+  //             />
+  //           </TouchableOpacity>
+  //           <Text style={styles.ingredientCounter}>0</Text>
+  //           <TouchableOpacity>
+  //             <Image
+  //               style={styles.incrDecrIcon}
+  //               source={require('../assets/minusIcon.png')}
+  //             />
+  //           </TouchableOpacity>
+  //         </View>
+  //       </View>
+  //     );
+  //   });
+  // };
 
   const renderIngredients = item => {
     return (
@@ -134,6 +189,7 @@ const ItemsScreen = props => {
             keyExtractor={data => data.id}
             renderItem={({item}) => renderIngredients(item)}
           />
+          {/*{renderTest(props.products, tempData)}*/}
         </View>
       </View>
       <View style={styles.checkoutOuterContainer}>
@@ -260,4 +316,15 @@ const mapStateToProps = state => {
   return state;
 };
 
-export default connect(mapStateToProps)(ItemsScreen);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      fetchProducts,
+    },
+    dispatch,
+  );
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ItemsScreen);
