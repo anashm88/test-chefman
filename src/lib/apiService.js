@@ -1,28 +1,44 @@
 import {data} from './mockData';
+import _ from 'lodash';
 
 export default class APIService {
   static async getStores() {
-    const stores = [...data.stores];
+    const stores = _.cloneDeep(data.stores);
+    const extractedStoreIdObject = {};
     stores.forEach(item => {
       delete item.catalog;
+      extractedStoreIdObject[item.storeId] = item;
     });
-    return stores; // return without catalog
+    return extractedStoreIdObject; // return without catalog
   }
   static async getProducts() {
-    return data.products;
+    const products = _.cloneDeep(data.products);
+    const extractedProductIdObject = {};
+    products.forEach(item => {
+      extractedProductIdObject[item.productId] = item;
+    });
+    return extractedProductIdObject;
   }
   static async getStoreCatalog(storeId) {
     // logic to return catalog of store with id as storeID
     // only array of catalog for that store
-    const stores = [...data.stores];
+    const stores = _.cloneDeep(data.stores);
+    const extractedProductIdCatalog = {};
     stores.forEach(item => {
       if (storeId === item.storeId) {
-        return item.catalog;
+        item.catalog.forEach(val => {
+          extractedProductIdCatalog[val.productId] = val;
+        });
       }
     });
-    return 'store catalog not found';
+    return extractedProductIdCatalog;
   }
   static async getIngredients() {
-    return data.ingredients;
+    const ingredients = _.cloneDeep(data.ingredients);
+    const extractedProductIdIngredients = {};
+    ingredients.forEach(item => {
+      extractedProductIdIngredients[item.productId] = item;
+    });
+    return extractedProductIdIngredients;
   }
 }

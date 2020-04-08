@@ -1,7 +1,7 @@
 export const data = {
   stores: [
     {
-      storeId: 1,
+      storeId: 'S1',
       name: 'Store 1',
       deliveryTime: '2 hours',
       address: 'Dummy Address, NY',
@@ -59,7 +59,7 @@ export const data = {
       ],
     },
     {
-      storeId: 2,
+      storeId: 'S2',
       name: 'Store 2',
       deliveryTime: '3 hours',
       address: 'Dummy Address, LA',
@@ -107,7 +107,7 @@ export const data = {
       ],
     },
     {
-      storeId: 3,
+      storeId: 'S3',
       name: 'Store 3',
       deliveryTime: '2.5 hours',
       address: 'Dummy Address, LS',
@@ -266,10 +266,6 @@ export const data = {
     },
     {
       productId: 'P10',
-      quantity: 2,
-    },
-    {
-      productId: 'P1',
       quantity: 2,
     },
   ],

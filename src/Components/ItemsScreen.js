@@ -6,13 +6,20 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-    ScrollView,
+  ScrollView,
   Image,
 } from 'react-native';
 import {connect} from 'react-redux';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {bindActionCreators} from 'redux';
-import {fetchProducts} from '../redux/actions/actionCreators';
+import {
+  fetchProducts,
+  fetchStores,
+  fetchCatalog,
+  fetchIngredients,
+} from '../redux/actions/actionCreators';
+
+import _ from 'lodash';
 
 const tempData = [
   {
@@ -79,12 +86,26 @@ const tempData = [
 
 const ItemsScreen = props => {
   const [value, onChangeText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      await props.fetchProducts();
+      await props.fetchStores();
+      await props.fetchCatalog('S2');
+      await props.fetchIngredients();
+    } catch (e) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    props.fetchProducts();
+    fetchData();
   }, []);
 
-  if (props.isLoading) {
+  if (_.isEmpty(props.ingredients) || isLoading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text>Loading</Text>
@@ -92,45 +113,64 @@ const ItemsScreen = props => {
     );
   }
 
-  // const renderTest = (product, item) => {
-  //   console.log(product);
-  //   return product.map(val => {
-  //     return (
-  //       <View style={styles.ingredient}>
-  //         <View style={styles.imageAndDetails}>
-  //           <Image
-  //             style={styles.ingredientImage}
-  //             source={require('../assets/randomImage.png')}
-  //           />
-  //           <View style={styles.ingredientDetails}>
-  //             <View>
-  //               <Text style={styles.ingredientName}>{val.productName && val.productName}</Text>
-  //               <Text style={styles.ingredientWeight}>{val.quantitySize && val.quantitySize}</Text>
-  //             </View>
-  //             <Text style={styles.ingredientAmount}>
-  //               $ {item.amount}/packet
-  //             </Text>
-  //           </View>
-  //         </View>
-  //         <View style={styles.addSubtractIngredient}>
-  //           <TouchableOpacity>
-  //             <Image
-  //               style={styles.incrDecrIcon}
-  //               source={require('../assets/plusIcon.png')}
-  //             />
-  //           </TouchableOpacity>
-  //           <Text style={styles.ingredientCounter}>0</Text>
-  //           <TouchableOpacity>
-  //             <Image
-  //               style={styles.incrDecrIcon}
-  //               source={require('../assets/minusIcon.png')}
-  //             />
-  //           </TouchableOpacity>
-  //         </View>
-  //       </View>
-  //     );
-  //   });
-  // };
+  const cartItems = {};
+
+  for (const productId in props.ingredients) {
+    let cartItem = {};
+    const {price = -1, maxQuantity = -1} = props.catalog[productId] || {};
+    const {quantity} = props.ingredients[productId];
+    cartItem = {price, maxQuantity, quantity};
+    cartItems[productId] = cartItem;
+  }
+
+  console.log(cartItems);
+
+  const renderCart = items => {
+    const cartList = [];
+    for (const productId in items) {
+      cartList.push(
+        <View style={styles.ingredient}>
+          <View style={styles.imageAndDetails}>
+            <Image
+              style={styles.ingredientImage}
+              source={require('../assets/randomImage.png')}
+            />
+            <View style={styles.ingredientDetails}>
+              <View>
+                <Text style={styles.ingredientName}>
+                  {props.products[productId].productName}
+                </Text>
+                <Text style={styles.ingredientWeight}>
+                  {props.products[productId].quantitySize}
+                </Text>
+              </View>
+              <Text style={styles.ingredientAmount}>
+                $ {items[productId].price}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.addSubtractIngredient}>
+            <TouchableOpacity>
+              <Image
+                style={styles.incrDecrIcon}
+                source={require('../assets/plusIcon.png')}
+              />
+            </TouchableOpacity>
+            <Text style={styles.ingredientCounter}>
+              {items[productId].price < 0 ? 0 : items[productId].quantity}
+            </Text>
+            <TouchableOpacity>
+              <Image
+                style={styles.incrDecrIcon}
+                source={require('../assets/minusIcon.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>,
+      );
+    }
+    return cartList;
+  };
 
   const renderIngredients = item => {
     return (
@@ -184,12 +224,14 @@ const ItemsScreen = props => {
           />
         </View>
         <View style={styles.ingredientsListContainer}>
-          <FlatList
-            data={tempData}
-            keyExtractor={data => data.id}
-            renderItem={({item}) => renderIngredients(item)}
-          />
-          {/*{renderTest(props.products, tempData)}*/}
+          {/*<FlatList*/}
+          {/*  data={tempData}*/}
+          {/*  keyExtractor={data => data.id}*/}
+          {/*  renderItem={({item}) => renderIngredients(item)}*/}
+          {/*/>*/}
+          <ScrollView>
+            {renderCart(cartItems)}
+          </ScrollView>
         </View>
       </View>
       <View style={styles.checkoutOuterContainer}>
@@ -320,6 +362,9 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       fetchProducts,
+      fetchStores,
+      fetchCatalog,
+      fetchIngredients,
     },
     dispatch,
   );
