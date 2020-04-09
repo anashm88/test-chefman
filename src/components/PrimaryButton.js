@@ -5,7 +5,9 @@ import {Colors} from '../constants/Colors';
 
 export const PrimaryButton = ({text, onPress, fullWidth}) => (
   <View style={styles.container}>
-    <TouchableOpacity style={[styles.primaryButtonStyle, fullWidth ? {width: '100%'}: {}]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.primaryButtonStyle, fullWidth ? {width: '100%'} : {}]}
+      onPress={onPress}>
       <Text style={styles.text}>{text}</Text>
     </TouchableOpacity>
   </View>

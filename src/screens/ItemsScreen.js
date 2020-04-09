@@ -22,6 +22,7 @@ import {
 import _ from 'lodash';
 import HomeScreenItem from '../components/HomeScreenItem';
 import {Colors} from '../constants/Colors';
+import {EmptyView} from '../components/EmptyView';
 
 const ItemsScreen = props => {
   const [searchText, onSearchTextChange] = useState('');
@@ -135,6 +136,7 @@ const ItemsScreen = props => {
                   key={pid}
                 />
               ))}
+            <EmptyView />
           </ScrollView>
         </View>
       </View>
