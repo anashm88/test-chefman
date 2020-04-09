@@ -21,7 +21,7 @@ import {
 } from '../redux/actions/actionCreators';
 
 import _ from 'lodash';
-import HomeScreenItem from './HomeScreenItem';
+import HomeScreenItem from '../Components/HomeScreenItem';
 
 const ItemsScreen = props => {
   const [value, onChangeText] = useState('');

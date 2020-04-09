@@ -1,6 +1,6 @@
 import {createStackNavigator} from 'react-navigation-stack';
-import ItemsScreen from '../Components/ItemsScreen';
-import OrderDetailsScreen from '../Components/OrderDetailsScreen';
+import ItemsScreen from '../screens/ItemsScreen';
+import OrderDetailsScreen from '../screens/OrderDetailsScreen';
 
 const StartNavigator = createStackNavigator(
   {
