@@ -8,6 +8,7 @@ import {
   FlatList,
   ScrollView,
   Image,
+  Picker,
 } from 'react-native';
 import {connect} from 'react-redux';
 import EStyleSheet from 'react-native-extended-stylesheet';
@@ -273,6 +274,7 @@ const ItemsScreen = props => {
             </Text>
           </View>
           <TouchableOpacity
+            onPress={() => props.navigation.navigate('OrderDetailsScreen')}
             style={styles.checkoutTouchable}
             disabled={!itemsTotal}>
             <Text

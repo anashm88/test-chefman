@@ -2,6 +2,9 @@ import {
   ITEM_ADDED,
   ITEM_SUBTRACTED,
   ITEM_DELETED,
+  USER_NAME_UPDATE,
+  USER_ADDRESS_UPDATE,
+  USER_PHONE_UPDATE,
   FETCH_PRODUCTS_PENDING,
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_ERROR,
@@ -26,6 +29,18 @@ export function itemSubtracted(data) {
 
 export function itemDeleted(data) {
   return {type: ITEM_DELETED, payload: data};
+}
+
+export function userNameUpdate(data) {
+  return {type: USER_NAME_UPDATE, payload: data};
+}
+
+export function userAddressUpdate(data) {
+  return {type: USER_ADDRESS_UPDATE, payload: data};
+}
+
+export function userPhoneUpdate(data) {
+  return {type: USER_PHONE_UPDATE, payload: data};
 }
 
 export function fetchProductsPending() {

@@ -14,6 +14,9 @@ import {
   FETCH_INGREDIENTS_PENDING,
   FETCH_INGREDIENTS_SUCCESS,
   FETCH_INGREDIENTS_ERROR,
+  USER_NAME_UPDATE,
+  USER_ADDRESS_UPDATE,
+  USER_PHONE_UPDATE,
 } from '../actions/actionTypes';
 
 const initState = {
@@ -21,7 +24,12 @@ const initState = {
   stores: {}, // except catalog
   catalog: {}, // store catalogue of the store Selected,
   ingredients: {},
-  selectedStoreId: 'S1',
+  userDetails: {
+    name: 'John',
+    address: 'Sector 34, LA',
+    phone: '9876543210',
+  },
+  selectedStoreId: 'S2',
   isLoading: false,
   pending: false,
   error: null,
@@ -32,7 +40,7 @@ const rootReducer = (state = initState, action) => {
     case ITEM_DELETED:
       return {
         ...state,
-      }
+      };
     case FETCH_PRODUCTS_PENDING:
       return {
         ...state,
@@ -112,6 +120,31 @@ const rootReducer = (state = initState, action) => {
         pending: false,
         ingredients: action.error,
         isLoading: false,
+      };
+    case USER_NAME_UPDATE:
+      console.log('hit'+action.payload);
+      return {
+        ...state,
+        userDetails: {
+          ...state.userDetails,
+          name: action.payload,
+        },
+      };
+    case USER_ADDRESS_UPDATE:
+      return {
+        ...state,
+        userDetails: {
+          ...state.userDetails,
+          address: action.payload,
+        },
+      };
+    case USER_PHONE_UPDATE:
+      return {
+        ...state,
+        userDetails: {
+          ...state.userDetails,
+          phone: action.payload,
+        },
       };
     default:
       return state;
