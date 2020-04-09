@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {useSelector} from 'react-redux';
 import {Colors} from '../constants/Colors';
+import {PrimaryButton} from './PrimaryButton';
 
 const BillDetailsComponent = () => {
   const {totalItems, totalPrice} = useSelector(state => state);
@@ -20,10 +21,7 @@ const BillDetailsComponent = () => {
         <Text style={styles.billDetailItemText}>Items Total</Text>
         <Text style={styles.billDetailItemText}>{`$ ${totalPrice}`}</Text>
       </View>
-      <TouchableOpacity style={styles.placeOrderContainer}>
-        <Text style={styles.placeOrderText}>Place Order</Text>
-        <Text style={styles.placeOrderArrow}>{'>'}</Text>
-      </TouchableOpacity>
+      <PrimaryButton fullWidth={true} onPress={() => {alert('order placed')}} text={'Place Order >'} />
     </View>
   );
 };

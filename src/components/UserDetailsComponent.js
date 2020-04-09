@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {useSelector} from 'react-redux';
 import {Colors} from '../constants/Colors';
+import {PrimaryButton} from './PrimaryButton';
 
 const UserDetailsComponent = () => {
   const {userDetails} = useSelector(state => state);
@@ -39,6 +40,7 @@ const UserDetailsComponent = () => {
           value={phone}
         />
       </View>
+      <PrimaryButton text={'Submit'} fullWidth={false} onPress={() => alert('User details saved')} />
     </View>
   );
 };
@@ -49,7 +51,7 @@ const styles = EStyleSheet.create({
   },
   input: {
     backgroundColor: Colors.white,
-    color: 'grey',
+    color: Colors.black,
     paddingHorizontal: '15rem',
     height: '100%',
     width: '80%',
