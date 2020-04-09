@@ -17,6 +17,9 @@ import {
   ADD_ITEM_TO_INGREDIENTS_LIST,
   REMOVE_ITEM_FROM_INGREDIENTS_LIST,
   DELETE_ITEM_FROM_INGREDIENTS_LIST,
+  USER_NAME_UPDATE,
+  USER_ADDRESS_UPDATE,
+  USER_PHONE_UPDATE,
 } from '../actions/actionTypes';
 import _ from 'lodash';
 
@@ -25,7 +28,12 @@ const initState = {
   stores: {}, // except catalog
   catalog: {}, // store catalogue of the store Selected,
   ingredients: {},
-  selectedStoreId: 'S1',
+  userDetails: {
+    name: 'John',
+    address: 'Sector 34, LA',
+    phone: '9876543210',
+  },
+  selectedStoreId: 'S2',
   isLoading: false,
   pending: false,
   error: null,
@@ -184,6 +192,31 @@ const rootReducer = (state = initState, action) => {
           ingredients,
         };
       }
+    case USER_NAME_UPDATE:
+      console.log('hit'+action.payload);
+      return {
+        ...state,
+        userDetails: {
+          ...state.userDetails,
+          name: action.payload,
+        },
+      };
+    case USER_ADDRESS_UPDATE:
+      return {
+        ...state,
+        userDetails: {
+          ...state.userDetails,
+          address: action.payload,
+        },
+      };
+    case USER_PHONE_UPDATE:
+      return {
+        ...state,
+        userDetails: {
+          ...state.userDetails,
+          phone: action.payload,
+        },
+      };
     default:
       return state;
   }

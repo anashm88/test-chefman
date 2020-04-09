@@ -117,6 +117,7 @@ const ItemsScreen = props => {
             </Text>
           </View>
           <TouchableOpacity
+            onPress={() => props.navigation.navigate('OrderDetailsScreen')}
             style={styles.checkoutTouchable}
             disabled={!itemsTotal}>
             <Text
