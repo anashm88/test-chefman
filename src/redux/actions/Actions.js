@@ -56,6 +56,13 @@ export function fetchCatalogSuccess(payload) {
   };
 }
 
+export function updateSelectedStoreAction(storeId) {
+  return {
+    type: UPDATE_SELECTED_STORE,
+    payload: {storeId},
+  }
+}
+
 export function fetchIngredientsPending() {
   return {
     type: FETCH_INGREDIENTS_PENDING,

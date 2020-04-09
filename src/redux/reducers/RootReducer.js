@@ -14,6 +14,7 @@ import {
   FETCH_STORES_PENDING,
   FETCH_STORES_SUCCESS,
   REMOVE_ITEM_FROM_INGREDIENTS_LIST,
+  UPDATE_SELECTED_STORE,
   UPDATE_USER_DETAILS,
 } from '../actions/ActionTypes';
 import _ from 'lodash';
@@ -104,6 +105,7 @@ const rootReducer = (state = initState, action) => {
         pending: false,
         catalog: action.payload,
         isLoading: false,
+        ...calculateTotalItemsAndTotalPrice(state.ingredients, action.payload),
       };
     case FETCH_CATALOG_ERROR:
       return {
@@ -124,7 +126,7 @@ const rootReducer = (state = initState, action) => {
         pending: false,
         ingredients: action.payload,
         isLoading: false,
-        ...calculateTotalItemsAndTotalPrice(action.payload, state.catalog)
+        ...calculateTotalItemsAndTotalPrice(action.payload, state.catalog),
       };
     case FETCH_INGREDIENTS_ERROR:
       return {
@@ -132,6 +134,11 @@ const rootReducer = (state = initState, action) => {
         pending: false,
         ingredients: action.error,
         isLoading: false,
+      };
+    case UPDATE_SELECTED_STORE:
+      return {
+        selectedStoreId: action.payload.storeId,
+        ...calculateTotalItemsAndTotalPrice(state.ingredients, state.catalog),
       };
     case ADD_ITEM_TO_INGREDIENTS_LIST:
       productId = action.payload.productId;

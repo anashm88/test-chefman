@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -16,6 +16,7 @@ import {
   fetchIngredients,
   fetchProducts,
   fetchStores,
+  setSelectedStore,
 } from '../redux/actions/ActionCreators';
 
 import _ from 'lodash';
@@ -25,12 +26,18 @@ import {Colors} from '../constants/Colors';
 const ItemsScreen = props => {
   const [value, onChangeText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const {totalItems, totalPrice, ingredients, catalog} = useSelector(
-    state => state,
-  );
-  const [address, setAddress] = useState('java');
+  const {
+    totalItems,
+    totalPrice,
+    ingredients,
+    catalog,
+    stores,
+    selectedStoreId,
+  } = useSelector(state => state);
 
-  const fetchData = async () => {
+  const [storeId, setStoreId] = useState(selectedStoreId);
+
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
       await props.fetchProducts();
@@ -41,11 +48,11 @@ const ItemsScreen = props => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [props]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   if (_.isEmpty(ingredients) || isLoading) {
     return (
@@ -74,24 +81,10 @@ const ItemsScreen = props => {
   }
 
   const placeholder = {
-    label: 'Select a sport...',
+    label: 'Select a store...',
     value: null,
     color: Colors.gray,
   };
-  const sports = [
-    {
-      label: 'Football',
-      value: 'football',
-    },
-    {
-      label: 'Baseball',
-      value: 'baseball',
-    },
-    {
-      label: 'Hockey',
-      value: 'hockey',
-    },
-  ];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -99,10 +92,19 @@ const ItemsScreen = props => {
         <View style={styles.locationContainer}>
           <RNPickerSelect
             placeholder={placeholder}
-            items={sports}
-            onValueChange={setAddress}
+            items={Object.values(stores).map(store => {
+              return {
+                label: `${store.name}, ${store.address}`,
+                value: store.storeId,
+              };
+            })}
+            onValueChange={v => {
+              debugger;
+              setStoreId(v);
+            }}
+            onDonePress={() => props.setSelectedStore(storeId)}
             style={pickerStyle}
-            value={address}
+            value={storeId}
             useNativeAndroidPickerStyle={false}
             textInputProps={{underlineColorAndroid: 'cyan'}}
           />
@@ -303,6 +305,7 @@ const mapDispatchToProps = dispatch =>
       fetchStores,
       fetchCatalog,
       fetchIngredients,
+      setSelectedStore,
     },
     dispatch,
   );

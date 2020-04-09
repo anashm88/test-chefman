@@ -49,3 +49,11 @@ export const fetchIngredients = () => {
   };
 };
 
+export const setSelectedStore = (storeId) => {
+  return async dispatch => {
+    const catalog = await APIService.getStoreCatalog(storeId);
+    dispatch(fetchCatalogSuccess(catalog));
+    dispatch(updateSelectedStoreAction(storeId));
+  }
+}
+

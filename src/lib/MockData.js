@@ -8,7 +8,7 @@ export const data = {
       catalog: [
         {
           productId: 'P1',
-          price: 18,
+          price: 28,
           maxQuantity: 10,
         },
         {
