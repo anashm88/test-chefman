@@ -100,18 +100,8 @@ const ItemsScreen = props => {
           <RNPickerSelect
             placeholder={placeholder}
             items={sports}
-            inputIOS={pickerSelectStyles.inputIOS}
-            inputAndroid={pickerSelectStyles.inputAndroid}
             onValueChange={setAddress}
-            style={{
-              inputAndroid: {
-                backgroundColor: 'transparent',
-              },
-              iconContainer: {
-                top: 5,
-                right: 15,
-              },
-            }}
+            style={pickerStyle}
             value={address}
             useNativeAndroidPickerStyle={false}
             textInputProps={{underlineColorAndroid: 'cyan'}}
@@ -279,28 +269,33 @@ const styles = EStyleSheet.create({
   },
 });
 
-const pickerSelectStyles = EStyleSheet.create({
+const pickerStyle = {
   inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
+    color: Colors.white,
+    paddingTop: 13,
     paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
-    color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
+    paddingBottom: 12,
   },
   inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: 'purple',
-    borderRadius: 8,
-    color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
+    color: 'white',
   },
-});
+  placeholderColor: 'white',
+  underline: { borderTopWidth: 0 },
+  icon: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    borderTopWidth: 5,
+    borderTopColor: '#00000099',
+    borderRightWidth: 5,
+    borderRightColor: 'transparent',
+    borderLeftWidth: 5,
+    borderLeftColor: 'transparent',
+    width: 0,
+    height: 0,
+    top: 20,
+    right: 15,
+  },
+};
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
