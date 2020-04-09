@@ -8,10 +8,10 @@ import {
   View,
 } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import OrderDetailsScreen from '../Components/OrderDetailsItem';
-import UserDetailsComponent from '../Components/UserDetailsComponent';
-import StoreDetailsComponent from '../Components/StoreDetailsComponent';
-import BillDetailsComponent from '../Components/BillDetailsComponent';
+import OrderDetailsScreen from '../components/OrderDetailsItem';
+import UserDetailsComponent from '../components/UserDetailsComponent';
+import StoreDetailsComponent from '../components/StoreDetailsComponent';
+import BillDetailsComponent from '../components/BillDetailsComponent';
 
 const OrderDetails = props => {
   const {ingredients, stores, selectedStoreId} = useSelector(state => state);

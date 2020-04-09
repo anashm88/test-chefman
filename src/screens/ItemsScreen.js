@@ -16,11 +16,11 @@ import {
   fetchIngredients,
   fetchProducts,
   fetchStores,
-} from '../redux/actions/actionCreators';
+} from '../redux/actions/ActionCreators';
 
 import _ from 'lodash';
-import HomeScreenItem from '../Components/HomeScreenItem';
-import {Colors} from '../constants/constants';
+import HomeScreenItem from '../components/HomeScreenItem';
+import {Colors} from '../constants/Constants';
 
 const ItemsScreen = props => {
   const [value, onChangeText] = useState('');

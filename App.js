@@ -4,7 +4,7 @@ import {Dimensions} from 'react-native';
 import {createStore, applyMiddleware} from 'redux';
 import {createAppContainer} from 'react-navigation';
 import {StartNavigator} from './src/navigation/StartContainer';
-import rootReducer from './src/redux/reducers/rootReducer';
+import rootReducer from './src/redux/reducers/RootReducer';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import thunk from 'redux-thunk';
 

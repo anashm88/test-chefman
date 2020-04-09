@@ -10,13 +10,13 @@ import {
   fetchStoresPending,
   fetchStoresSuccess,
   removeItemFromIngredientsListAction,
-} from './actions';
-import APIService from '../../lib/apiService';
+} from './Actions';
+import ApiService from '../../lib/ApiService';
 
 export const fetchProducts = () => {
   return async dispatch => {
     dispatch(fetchProductsPending());
-    const products = await APIService.getProducts();
+    const products = await ApiService.getProducts();
     dispatch(fetchProductsSuccess(products));
     return products;
   };
@@ -25,7 +25,7 @@ export const fetchProducts = () => {
 export const fetchStores = () => {
   return async dispatch => {
     dispatch(fetchStoresPending());
-    const stores = await APIService.getStores();
+    const stores = await ApiService.getStores();
     dispatch(fetchStoresSuccess(stores));
     return stores;
   };
@@ -34,7 +34,7 @@ export const fetchStores = () => {
 export const fetchCatalog = storeID => {
   return async dispatch => {
     dispatch(fetchCatalogPending());
-    const catalog = await APIService.getStoreCatalog(storeID);
+    const catalog = await ApiService.getStoreCatalog(storeID);
     dispatch(fetchCatalogSuccess(catalog));
     return catalog;
   };
@@ -43,7 +43,7 @@ export const fetchCatalog = storeID => {
 export const fetchIngredients = () => {
   return async dispatch => {
     dispatch(fetchIngredientsPending());
-    const ingredients = await APIService.getIngredients();
+    const ingredients = await ApiService.getIngredients();
     dispatch(fetchIngredientsSuccess(ingredients));
     return ingredients;
   };

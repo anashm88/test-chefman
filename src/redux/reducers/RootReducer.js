@@ -15,7 +15,7 @@ import {
   FETCH_STORES_SUCCESS,
   REMOVE_ITEM_FROM_INGREDIENTS_LIST,
   UPDATE_USER_DETAILS,
-} from '../actions/actionTypes';
+} from '../actions/ActionTypes';
 import _ from 'lodash';
 
 const initState = {

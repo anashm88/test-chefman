@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   addItemToIngredientsListAction,
   removeItemFromIngredientsListAction,
-} from '../redux/actions/actions';
+} from '../redux/actions/Actions';
 
 const OrderDetailsScreen = ({productId, quantity}) => {
   const {products, catalog} = useSelector(state => state);

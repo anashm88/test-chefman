@@ -1,7 +1,7 @@
-import {data} from './mockData';
+import {data} from './MockData';
 import _ from 'lodash';
 
-export default class APIService {
+export default class ApiService {
   static async getStores() {
     const stores = _.cloneDeep(data.stores);
     const extractedStoreIdObject = {};

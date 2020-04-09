@@ -11,7 +11,7 @@ import {
   FETCH_STORES_SUCCESS,
   REMOVE_ITEM_FROM_INGREDIENTS_LIST,
   UPDATE_USER_DETAILS,
-} from './actionTypes';
+} from './ActionTypes';
 
 export function updateUserDetails(data) {
   return {type: UPDATE_USER_DETAILS, payload: data};

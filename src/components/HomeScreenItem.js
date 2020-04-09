@@ -6,7 +6,7 @@ import {
   addItemToIngredientsListAction,
   deleteItemFromCartAction,
   removeItemFromIngredientsListAction,
-} from '../redux/actions/actions';
+} from '../redux/actions/Actions';
 
 const HomeScreenItem = ({productId, quantity}) => {
   const {products, catalog} = useSelector(state => state);
