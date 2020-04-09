@@ -1,12 +1,35 @@
 import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Colors} from '../constants/Colors';
 import {PrimaryButton} from './PrimaryButton';
+import ApiService from '../lib/ApiService';
 
 const BillDetailsComponent = () => {
   const {totalItems, totalPrice} = useSelector(state => state);
+  const {products, catalog, ingredients} = useSelector(state => state);
+
+  const onSubmit = async () => {
+    let isItemOutOfStock = false;
+    for (const productId in ingredients) {
+      const maxQuantity = catalog[productId]
+        ? catalog[productId].maxQuantity
+        : 0;
+      const quantity = ingredients[productId].quantity;
+      debugger;
+      if (quantity > maxQuantity) {
+        isItemOutOfStock = true;
+      }
+    }
+
+    if (isItemOutOfStock) {
+      alert('Placing order with some out of stock items');
+    } else {
+      alert('Placing order successfully');
+    }
+    await ApiService.placeOrder(ingredients);
+  };
 
   return (
     <View style={styles.billDetailOuter}>
@@ -21,7 +44,11 @@ const BillDetailsComponent = () => {
         <Text style={styles.billDetailItemText}>Items Total</Text>
         <Text style={styles.billDetailItemText}>{`$ ${totalPrice}`}</Text>
       </View>
-      <PrimaryButton fullWidth={true} onPress={() => {alert('order placed')}} text={'Place Order >'} />
+      <PrimaryButton
+        fullWidth={true}
+        onPress={onSubmit}
+        text={'Place Order >'}
+      />
     </View>
   );
 };

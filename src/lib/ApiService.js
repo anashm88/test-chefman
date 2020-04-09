@@ -41,4 +41,8 @@ export default class ApiService {
     });
     return extractedProductIdIngredients;
   }
+
+  static async placeOrder(orderItems) {
+    console.log('order placed');
+  }
 }
