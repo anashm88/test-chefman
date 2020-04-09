@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import RNPickerSelect, {defaultStyles} from 'react-native-picker-select';
 import {bindActionCreators} from 'redux';
 import {
   addItemToCart,
@@ -22,10 +23,12 @@ import {
 
 import _ from 'lodash';
 import HomeScreenItem from '../Components/HomeScreenItem';
+import {Colors} from '../constants/constants';
 
 const ItemsScreen = props => {
   const [value, onChangeText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [address, setAddress] = useState('java');
   const [totalItems, setTotalItems] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -81,13 +84,49 @@ const ItemsScreen = props => {
     }
   }
 
+  const placeholder = {
+    label: 'Select a sport...',
+    value: null,
+    color: '#9EA0A4',
+  };
+  const sports = [
+    {
+      label: 'Football',
+      value: 'football',
+    },
+    {
+      label: 'Baseball',
+      value: 'baseball',
+    },
+    {
+      label: 'Hockey',
+      value: 'hockey',
+    },
+  ];
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.locationContainer}>
-          <Text style={styles.locationText}>
-            Ambience Mall, Gurugram, Haryana
-          </Text>
+          <RNPickerSelect
+            placeholder={placeholder}
+            items={sports}
+            inputIOS={pickerSelectStyles.inputIOS}
+            inputAndroid={pickerSelectStyles.inputAndroid}
+            onValueChange={setAddress}
+            style={{
+              inputAndroid: {
+                backgroundColor: 'transparent',
+              },
+              iconContainer: {
+                top: 5,
+                right: 15,
+              },
+            }}
+            value={address}
+            useNativeAndroidPickerStyle={false}
+            textInputProps={{underlineColorAndroid: 'cyan'}}
+          />
         </View>
         <View style={styles.inputContainer}>
           <TextInput
@@ -239,6 +278,36 @@ const styles = EStyleSheet.create({
   listRightItems: {
     justifyContent: 'space-around',
     alignItems: 'flex-end',
+  },
+  picker: {
+    width: '100%',
+    height: 44,
+  },
+  pickerItem: {
+    color: Colors.white,
+  },
+});
+
+const pickerSelectStyles = EStyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: 'purple',
+    borderRadius: 8,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
   },
 });
 
