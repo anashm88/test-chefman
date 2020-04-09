@@ -1,25 +1,20 @@
 import {
-  ITEM_ADDED,
-  ITEM_SUBTRACTED,
-  ITEM_DELETED,
-  FETCH_PRODUCTS_PENDING,
-  FETCH_PRODUCTS_SUCCESS,
-  FETCH_PRODUCTS_ERROR,
-  FETCH_STORES_PENDING,
-  FETCH_STORES_SUCCESS,
-  FETCH_STORES_ERROR,
+  ADD_ITEM_TO_INGREDIENTS_LIST,
+  DELETE_ITEM_FROM_INGREDIENTS_LIST,
+  FETCH_CATALOG_ERROR,
   FETCH_CATALOG_PENDING,
   FETCH_CATALOG_SUCCESS,
-  FETCH_CATALOG_ERROR,
+  FETCH_INGREDIENTS_ERROR,
   FETCH_INGREDIENTS_PENDING,
   FETCH_INGREDIENTS_SUCCESS,
-  FETCH_INGREDIENTS_ERROR,
-  ADD_ITEM_TO_INGREDIENTS_LIST,
+  FETCH_PRODUCTS_ERROR,
+  FETCH_PRODUCTS_PENDING,
+  FETCH_PRODUCTS_SUCCESS,
+  FETCH_STORES_ERROR,
+  FETCH_STORES_PENDING,
+  FETCH_STORES_SUCCESS,
   REMOVE_ITEM_FROM_INGREDIENTS_LIST,
-  DELETE_ITEM_FROM_INGREDIENTS_LIST,
-  USER_NAME_UPDATE,
-  USER_ADDRESS_UPDATE,
-  USER_PHONE_UPDATE,
+  UPDATE_USER_DETAILS,
 } from '../actions/actionTypes';
 import _ from 'lodash';
 
@@ -31,21 +26,32 @@ const initState = {
   userDetails: {
     name: 'John',
     address: 'Sector 34, LA',
-    phone: '9876543210',
+    phone: '7847032983',
   },
   selectedStoreId: 'S2',
   isLoading: false,
   pending: false,
   error: null,
+  totalItems: 0,
+  totalPrice: 0,
+};
+
+const calculateTotalItemsAndTotalPrice = (ingredients, catalog) => {
+  let totalItems = 0;
+  let totalPrice = 0;
+  for (const productId in ingredients) {
+    totalItems += ingredients[productId].quantity;
+    totalPrice +=
+      ingredients[productId].quantity *
+      (catalog[productId] ? catalog[productId].price : 0);
+  }
+
+  return {totalItems, totalPrice};
 };
 
 const rootReducer = (state = initState, action) => {
   let productId;
   switch (action.type) {
-    case ITEM_DELETED:
-      return {
-        ...state,
-      };
     case FETCH_PRODUCTS_PENDING:
       return {
         ...state,
@@ -118,6 +124,7 @@ const rootReducer = (state = initState, action) => {
         pending: false,
         ingredients: action.payload,
         isLoading: false,
+        ...calculateTotalItemsAndTotalPrice(action.payload, state.catalog)
       };
     case FETCH_INGREDIENTS_ERROR:
       return {
@@ -130,7 +137,10 @@ const rootReducer = (state = initState, action) => {
       productId = action.payload.productId;
       if (state.ingredients[productId]) {
         let qty = state.ingredients[productId].quantity;
-        if (qty >= state.catalog[productId].maxQuantity) {
+        let maxQuantity = state.catalog[productId]
+          ? state.catalog[productId].maxQuantity
+          : 0;
+        if (qty >= maxQuantity) {
           return {
             ...state,
             error: 'Max Quantity reached',
@@ -141,6 +151,7 @@ const rootReducer = (state = initState, action) => {
           return {
             ...state,
             ingredients,
+            ...calculateTotalItemsAndTotalPrice(ingredients, state.catalog),
           };
         }
       } else {
@@ -148,12 +159,14 @@ const rootReducer = (state = initState, action) => {
           state.catalog[productId] &&
           state.catalog[productId].maxQuantity > 0
         ) {
+          let ingredients = {
+            ...state.ingredients,
+            [productId]: {productId, quantity: 1},
+          };
           return {
             ...state,
-            ingredients: {
-              ...state.ingredients,
-              [productId]: {productId, quantity: 1},
-            },
+            ingredients,
+            ...calculateTotalItemsAndTotalPrice(ingredients, state.catalog),
           };
         } else {
           return {
@@ -165,16 +178,24 @@ const rootReducer = (state = initState, action) => {
     case REMOVE_ITEM_FROM_INGREDIENTS_LIST:
       productId = action.payload.productId;
       if (state.ingredients[productId]) {
-        let ingredients = _.clone(state.ingredients);
-        if (state.ingredients[productId].quantity === 1) {
-          delete ingredients[productId];
+        let maxQuantity = state.catalog[productId]
+          ? state.catalog[productId].maxQuantity
+          : 0;
+        if (maxQuantity >= state.ingredients[productId].quantity) {
+          let ingredients = _.clone(state.ingredients);
+          if (state.ingredients[productId].quantity === 1) {
+            delete ingredients[productId];
+          } else {
+            ingredients[productId].quantity--;
+          }
+          return {
+            ...state,
+            ingredients,
+            ...calculateTotalItemsAndTotalPrice(ingredients, state.catalog),
+          };
         } else {
-          ingredients[productId].quantity--;
+          return state;
         }
-        return {
-          ...state,
-          ingredients,
-        };
       } else {
         return {
           ...state,
@@ -182,7 +203,6 @@ const rootReducer = (state = initState, action) => {
         };
       }
     case DELETE_ITEM_FROM_INGREDIENTS_LIST:
-      debugger;
       productId = action.payload.productId;
       if (state.ingredients[productId]) {
         let ingredients = _.clone(state.ingredients);
@@ -190,32 +210,15 @@ const rootReducer = (state = initState, action) => {
         return {
           ...state,
           ingredients,
+          ...calculateTotalItemsAndTotalPrice(ingredients, state.catalog),
         };
+      } else {
+        return state;
       }
-    case USER_NAME_UPDATE:
-      console.log('hit'+action.payload);
+    case UPDATE_USER_DETAILS:
       return {
         ...state,
-        userDetails: {
-          ...state.userDetails,
-          name: action.payload,
-        },
-      };
-    case USER_ADDRESS_UPDATE:
-      return {
-        ...state,
-        userDetails: {
-          ...state.userDetails,
-          address: action.payload,
-        },
-      };
-    case USER_PHONE_UPDATE:
-      return {
-        ...state,
-        userDetails: {
-          ...state.userDetails,
-          phone: action.payload,
-        },
+        userDetails: action.payload.userDetails,
       };
     default:
       return state;

@@ -7,18 +7,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import RNPickerSelect, {defaultStyles} from 'react-native-picker-select';
 import {bindActionCreators} from 'redux';
 import {
-  addItemToCart,
-  deleteItemFromCart,
   fetchCatalog,
   fetchIngredients,
   fetchProducts,
   fetchStores,
-  removeItemFromCart,
 } from '../redux/actions/actionCreators';
 
 import _ from 'lodash';
@@ -28,9 +25,10 @@ import {Colors} from '../constants/constants';
 const ItemsScreen = props => {
   const [value, onChangeText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const {totalItems, totalPrice, ingredients, catalog} = useSelector(
+    state => state,
+  );
   const [address, setAddress] = useState('java');
-  const [totalItems, setTotalItems] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -49,7 +47,7 @@ const ItemsScreen = props => {
     fetchData();
   }, []);
 
-  if (_.isEmpty(props.ingredients) || isLoading) {
+  if (_.isEmpty(ingredients) || isLoading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text>Loading</Text>
@@ -59,28 +57,19 @@ const ItemsScreen = props => {
 
   const cartItems = {};
 
-  for (const productId in props.ingredients) {
+  for (const productId in ingredients) {
     let cartItem = {};
-    const {price = 0, maxQuantity = 0} = props.catalog[productId] || {};
-    const {quantity} = props.ingredients[productId];
+    const {price = 0, maxQuantity = 0} = catalog[productId] || {};
+    const {quantity} = ingredients[productId];
     cartItem = {price, maxQuantity, quantity, productId};
     cartItems[productId] = cartItem;
   }
 
-  for (const productId in props.catalog) {
+  for (const productId in catalog) {
     if (!cartItems[productId]) {
       const quantity = 0;
-      let cartItem = {...props.catalog[productId], quantity};
+      let cartItem = {...catalog[productId], quantity};
       cartItems[productId] = cartItem;
-    }
-  }
-
-  let priceTotal = 0;
-  let itemsTotal = 0;
-  for (const productId in cartItems) {
-    priceTotal += cartItems[productId].price * cartItems[productId].quantity;
-    if (cartItems[productId].maxQuantity) {
-      itemsTotal += cartItems[productId].quantity;
     }
   }
 
@@ -138,13 +127,15 @@ const ItemsScreen = props => {
         </View>
         <View style={styles.ingredientsListContainer}>
           <ScrollView>
-            {Object.keys(cartItems).map(pid => (
-              <HomeScreenItem
-                productId={pid}
-                quantity={cartItems[pid].quantity}
-                key={pid}
-              />
-            ))}
+            {Object.keys(cartItems)
+              .sort()
+              .map(pid => (
+                <HomeScreenItem
+                  productId={pid}
+                  quantity={cartItems[pid].quantity}
+                  key={pid}
+                />
+              ))}
           </ScrollView>
         </View>
       </View>
@@ -152,17 +143,17 @@ const ItemsScreen = props => {
         <View style={styles.checkoutInnerContainer}>
           <View>
             <Text style={styles.checkoutContainerText}>
-              {itemsTotal} items for: ${priceTotal}
+              {totalItems} items for: ${totalPrice}
             </Text>
           </View>
           <TouchableOpacity
             onPress={() => props.navigation.navigate('OrderDetailsScreen')}
             style={styles.checkoutTouchable}
-            disabled={!itemsTotal}>
+            disabled={!totalItems}>
             <Text
               style={[
                 styles.checkoutContainerText,
-                !itemsTotal ? {opacity: 0.4} : null,
+                !totalItems ? {opacity: 0.4} : null,
               ]}>
               Checkout
             </Text>
@@ -311,10 +302,6 @@ const pickerSelectStyles = EStyleSheet.create({
   },
 });
 
-const mapStateToProps = state => {
-  return state;
-};
-
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -322,14 +309,11 @@ const mapDispatchToProps = dispatch =>
       fetchStores,
       fetchCatalog,
       fetchIngredients,
-      addItemToCart,
-      removeItemFromCart,
-      deleteItemFromCart,
     },
     dispatch,
   );
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(ItemsScreen);

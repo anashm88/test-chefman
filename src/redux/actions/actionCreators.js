@@ -1,18 +1,15 @@
 import {
-  fetchProductsPending,
-  fetchProductsSuccess,
-  fetchProductsError,
-  fetchStoresPending,
-  fetchStoresSuccess,
-  fetchStoresError,
+  addItemToIngredientsListAction,
+  deleteItemFromCartAction,
   fetchCatalogPending,
   fetchCatalogSuccess,
-  fetchCatalogError,
   fetchIngredientsPending,
   fetchIngredientsSuccess,
-  fetchIngredientsError,
-  addItemToIngredientsListAction,
-  removeItemFromIngredientsListAction, deleteItemFromCartAction,
+  fetchProductsPending,
+  fetchProductsSuccess,
+  fetchStoresPending,
+  fetchStoresSuccess,
+  removeItemFromIngredientsListAction,
 } from './actions';
 import APIService from '../../lib/apiService';
 
@@ -22,18 +19,6 @@ export const fetchProducts = () => {
     const products = await APIService.getProducts();
     dispatch(fetchProductsSuccess(products));
     return products;
-    // fetch('https://example.com/products')
-    //     .then(res => res.json())
-    //     .then(res => {
-    //         if(res.error) {
-    //             throw(res.error);
-    //         }
-    //         dispatch(fetchProductsSuccess(res.products);
-    //         return res.products;
-    //     })
-    //     .catch(error => {
-    //         dispatch(fetchProductsError(error));
-    //     })
   };
 };
 
@@ -64,20 +49,3 @@ export const fetchIngredients = () => {
   };
 };
 
-export const addItemToCart = productId => {
-  return async dispatch => {
-    dispatch(addItemToIngredientsListAction(productId));
-  };
-};
-
-export const removeItemFromCart = productId => {
-  return async dispatch => {
-    dispatch(removeItemFromIngredientsListAction(productId));
-  };
-};
-
-export const deleteItemFromCart = productId => {
-  return async dispatch => {
-    dispatch(deleteItemFromCartAction(productId));
-  };
-}

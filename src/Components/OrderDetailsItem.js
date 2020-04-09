@@ -1,57 +1,59 @@
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {useSelector} from 'react-redux';
-import {
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import OrderDetailsScreen from '../Components/OrderDetailsItem';
-import UserDetailsComponent from '../Components/UserDetailsComponent';
-import StoreDetailsComponent from '../Components/StoreDetailsComponent';
-import BillDetailsComponent from '../Components/BillDetailsComponent';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  addItemToIngredientsListAction,
+  removeItemFromIngredientsListAction,
+} from '../redux/actions/actions';
 
-const OrderDetails = props => {
-  const {ingredients, stores, selectedStoreId} = useSelector(state => state);
+const OrderDetailsScreen = ({productId, quantity}) => {
+  const {products, catalog} = useSelector(state => state);
+  const productName = products[productId].productName;
+  const price = catalog[productId] ? catalog[productId].price : 0;
+  const dispatch = useDispatch();
+
+  const removeItemFromCart = productId => {
+    dispatch(removeItemFromIngredientsListAction(productId));
+  };
+
+  const addItemToCart = productId => {
+    dispatch(addItemToIngredientsListAction(productId));
+  };
+
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.EstimatedDeliveryContainer}>
-          <TouchableOpacity
-            style={styles.backArrowContainer}
-            onPress={() => {
-              props.navigation.goBack();
-            }}>
-            <Text style={styles.backArrow}>{'<'}</Text>
-          </TouchableOpacity>
-          <Text style={styles.EstimatedDeliveryText}>
-            Expected Delivery: {stores[selectedStoreId].deliveryTime}
-          </Text>
-        </View>
-        <ScrollView style={{backgroundColor: 'white'}}>
-          <View style={styles.DetailsTopContainer}>
-            <View style={styles.DetailsContainer}>
-              <Text style={styles.DetailsText}>ORDER DETAILS</Text>
-            </View>
-            <View>
-              {Object.keys(ingredients).map(key => (
-                <OrderDetailsScreen
-                  productId={key}
-                  quantity={ingredients[key].quantity}
-                  key={key}
-                />
-              ))}
-            </View>
-          </View>
-          <UserDetailsComponent />
-          <StoreDetailsComponent />
-          <BillDetailsComponent />
-        </ScrollView>
+    <View style={styles.listItem}>
+      <View>
+        <Text style={styles.ingredientName}>{productName}</Text>
+        <Text style={styles.ingredientWeight}>{`Pack: ${
+          products[productId].quantitySize
+        }`}</Text>
       </View>
-    </SafeAreaView>
+      <View style={{alignItems: 'center'}}>
+        <View style={styles.addSubtractIngredient}>
+          <TouchableOpacity onPress={() => removeItemFromCart(productId)}>
+            <Image
+              style={styles.incrDecrIcon}
+              source={require('../assets/plusIcon.png')}
+            />
+          </TouchableOpacity>
+          <View style={{justifyContent: 'center'}}>
+            <Text style={styles.ingredientCounter}>{`${quantity} Pack`}</Text>
+          </View>
+          <TouchableOpacity onPress={() => addItemToCart(productId)}>
+            <Image
+              style={styles.incrDecrIcon}
+              source={require('../assets/minusIcon.png')}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={{marginTop: 2}}>
+          <Text style={styles.ingredientWeight}>{`TOT: $${price *
+            quantity}`}</Text>
+        </View>
+      </View>
+    </View>
   );
 };
 
@@ -186,4 +188,4 @@ const styles = EStyleSheet.create({
   },
 });
 
-export default OrderDetails;
+export default OrderDetailsScreen;
