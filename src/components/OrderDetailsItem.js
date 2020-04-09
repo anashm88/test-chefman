@@ -13,6 +13,7 @@ const OrderDetailsScreen = ({productId, quantity}) => {
   const productName = products[productId].productName;
   const price = catalog[productId] ? catalog[productId].price : 0;
   const dispatch = useDispatch();
+  const maxQuantity = catalog[productId] ? catalog[productId].maxQuantity : 0;
 
   const removeItemFromCart = productId => {
     dispatch(removeItemFromIngredientsListAction(productId));
@@ -21,7 +22,6 @@ const OrderDetailsScreen = ({productId, quantity}) => {
   const addItemToCart = productId => {
     dispatch(addItemToIngredientsListAction(productId));
   };
-
 
   return (
     <View style={styles.listItem}>
@@ -40,7 +40,7 @@ const OrderDetailsScreen = ({productId, quantity}) => {
             />
           </TouchableOpacity>
           <View style={{justifyContent: 'center'}}>
-            <Text style={styles.ingredientCounter}>{`${quantity} Pack`}</Text>
+            <Text style={styles.ingredientCounter}>{`${quantity}`}</Text>
           </View>
           <TouchableOpacity onPress={() => addItemToCart(productId)}>
             <Image
@@ -49,10 +49,12 @@ const OrderDetailsScreen = ({productId, quantity}) => {
             />
           </TouchableOpacity>
         </View>
-        <View style={{marginTop: 2}}>
-          <Text style={styles.ingredientWeight}>{`TOT: $${price *
-            quantity}`}</Text>
-        </View>
+        {
+          <View style={{marginTop: 2}}>
+            <Text style={styles.ingredientWeight}>{ maxQuantity >= quantity ? `Total: $${price *
+              quantity}`: 'Out of stock'}</Text>
+          </View>
+        }
       </View>
     </View>
   );
