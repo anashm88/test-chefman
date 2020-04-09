@@ -16,6 +16,7 @@ import BillDetailsComponent from '../components/BillDetailsComponent';
 
 const OrderDetails = props => {
   const {ingredients, stores, selectedStoreId} = useSelector(state => state);
+  debugger;
 
   return (
     <SafeAreaView style={styles.container}>

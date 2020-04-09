@@ -103,9 +103,9 @@ const rootReducer = (state = initState, action) => {
       return {
         ...state,
         pending: false,
-        catalog: action.payload,
         isLoading: false,
-        ...calculateTotalItemsAndTotalPrice(state.ingredients, action.payload),
+        ...action.payload,
+        ...calculateTotalItemsAndTotalPrice(state.ingredients, action.payload.catalog),
       };
     case FETCH_CATALOG_ERROR:
       return {

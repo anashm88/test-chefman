@@ -31,11 +31,11 @@ export const fetchStores = () => {
   };
 };
 
-export const fetchCatalog = storeID => {
+export const fetchCatalogAndSetSelectedStore = storeId => {
   return async dispatch => {
     dispatch(fetchCatalogPending());
-    const catalog = await ApiService.getStoreCatalog(storeID);
-    dispatch(fetchCatalogSuccess(catalog));
+    const catalog = await ApiService.getStoreCatalog(storeId);
+    dispatch(fetchCatalogSuccess({catalog, selectedStoreId: storeId}));
     return catalog;
   };
 };
@@ -48,12 +48,4 @@ export const fetchIngredients = () => {
     return ingredients;
   };
 };
-
-export const setSelectedStore = (storeId) => {
-  return async dispatch => {
-    const catalog = await APIService.getStoreCatalog(storeId);
-    dispatch(fetchCatalogSuccess(catalog));
-    dispatch(updateSelectedStoreAction(storeId));
-  }
-}
 

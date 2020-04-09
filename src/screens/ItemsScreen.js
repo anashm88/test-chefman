@@ -12,7 +12,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import RNPickerSelect, {defaultStyles} from 'react-native-picker-select';
 import {bindActionCreators} from 'redux';
 import {
-  fetchCatalog,
+  fetchCatalogAndSetSelectedStore,
   fetchIngredients,
   fetchProducts,
   fetchStores,
@@ -43,7 +43,7 @@ const ItemsScreen = props => {
     try {
       await props.fetchProducts();
       await props.fetchStores();
-      await props.fetchCatalog('S2');
+      await props.fetchCatalogAndSetSelectedStore('S2');
       await props.fetchIngredients();
     } catch (e) {
     } finally {
@@ -104,10 +104,9 @@ const ItemsScreen = props => {
               };
             })}
             onValueChange={v => {
-              debugger;
               setStoreId(v);
             }}
-            onDonePress={() => props.setSelectedStore(storeId)}
+            onDonePress={() => props.fetchCatalogAndSetSelectedStore(storeId)}
             style={pickerStyle}
             value={storeId}
             useNativeAndroidPickerStyle={false}
@@ -311,9 +310,8 @@ const mapDispatchToProps = dispatch =>
     {
       fetchProducts,
       fetchStores,
-      fetchCatalog,
+      fetchCatalogAndSetSelectedStore,
       fetchIngredients,
-      setSelectedStore,
     },
     dispatch,
   );
