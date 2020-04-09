@@ -1,6 +1,7 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import {Colors} from '../constants/Colors';
 import React from 'react';
 import {
   addItemToIngredientsListAction,
@@ -43,7 +44,7 @@ const HomeScreenItem = ({productId, quantity}) => {
           </View>
           <Text style={styles.ingredientAmount}>
             {maxQuantity === 0 ? (
-              <Text style={{color: '#ff6666'}}>Out of Stock</Text>
+              <Text style={{color: Colors.red}}>Out of Stock</Text>
             ) : (
               '$ ' + price
             )}
@@ -60,7 +61,7 @@ const HomeScreenItem = ({productId, quantity}) => {
           {maxQuantity === 0 ? (
             <Text />
           ) : (
-            <Text style={[styles.ingredientAmount, {color: '#00cc00'}]}>
+            <Text style={[styles.ingredientAmount, {color: Colors.green}]}>
               $ {price * quantity}
             </Text>
           )}
@@ -94,7 +95,7 @@ const HomeScreenItem = ({productId, quantity}) => {
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#262626',
+    backgroundColor: Colors.lightGray,
   },
   content: {
     marginTop: '30rem',
@@ -102,12 +103,12 @@ const styles = EStyleSheet.create({
   },
   locationContainer: {
     marginHorizontal: '15rem',
-    borderBottomColor: 'white',
+    borderBottomColor: Colors.white,
     borderBottomWidth: '1rem',
     paddingVertical: '5rem',
   },
   locationText: {
-    color: 'white',
+    color: Colors.white,
     fontSize: '15rem',
   },
   inputContainer: {
@@ -116,8 +117,8 @@ const styles = EStyleSheet.create({
     paddingBottom: '15rem',
   },
   input: {
-    backgroundColor: 'white',
-    color: '#262626',
+    backgroundColor: Colors.white,
+    color: Colors.lightGray,
     paddingHorizontal: '15rem',
     height: '35rem',
     fontSize: '15rem',
@@ -125,12 +126,12 @@ const styles = EStyleSheet.create({
   },
   ingredientsListContainer: {
     height: '80%',
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
   },
   ingredient: {
     padding: '15rem',
-    borderBottomColor: '#eee',
-    borderBottomWidth: '0.6rem',
+    borderBottomColor: Colors.lightWhite,
+    borderBottomWidth: '1rem',
     flexDirection: 'row',
   },
   checkoutOuterContainer: {
@@ -143,7 +144,7 @@ const styles = EStyleSheet.create({
     marginHorizontal: '15rem',
     height: '50rem',
     borderRadius: '5rem',
-    backgroundColor: '#339933',
+    backgroundColor: Colors.lightGreen,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -155,7 +156,7 @@ const styles = EStyleSheet.create({
   },
   checkoutContainerText: {
     fontSize: '18rem',
-    color: 'white',
+    color: Colors.white,
     fontWeight: '600',
   },
   imageAndDetails: {
@@ -191,7 +192,7 @@ const styles = EStyleSheet.create({
   ingredientCounter: {
     fontSize: '15rem',
     marginHorizontal: '15rem',
-    color: '#00cc00',
+    color: Colors.green,
   },
   listRightItems: {
     justifyContent: 'space-around',

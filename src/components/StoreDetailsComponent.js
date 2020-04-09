@@ -2,6 +2,7 @@ import {Text, TextInput, View} from 'react-native';
 import React, {useState} from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {useSelector} from 'react-redux';
+import {Colors} from '../constants/Colors';
 
 const StoreDetailsComponent = () => {
   const {stores, selectedStoreId} = useSelector(state => state);
@@ -32,7 +33,7 @@ const styles = EStyleSheet.create({
     fontSize: '18rem',
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     color: 'grey',
     paddingHorizontal: '15rem',
     height: '100%',
@@ -42,18 +43,18 @@ const styles = EStyleSheet.create({
   },
   billDetailOuter: {
     marginHorizontal: '10rem',
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     borderRadius: '5rem',
     marginBottom: '20rem',
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: Colors.black,
     shadowOffset: {width: 0, height: '3rem'},
     shadowOpacity: 0.5,
     shadowRadius: 5,
   },
   billDetail: {
     padding: '10rem',
-    borderBottomColor: '#eee',
+    borderBottomColor: Colors.lightWhite,
     borderBottomWidth: '3rem',
   },
   billDetailItemContainer: {

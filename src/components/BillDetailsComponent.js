@@ -2,6 +2,7 @@ import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {useSelector} from 'react-redux';
+import {Colors} from '../constants/Colors';
 
 const BillDetailsComponent = () => {
   const {totalItems, totalPrice} = useSelector(state => state);
@@ -32,7 +33,7 @@ const styles = EStyleSheet.create({
     fontSize: '18rem',
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     color: 'grey',
     paddingHorizontal: '15rem',
     height: '100%',
@@ -42,18 +43,18 @@ const styles = EStyleSheet.create({
   },
   billDetailOuter: {
     marginHorizontal: '10rem',
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     borderRadius: '5rem',
     marginBottom: '20rem',
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: Colors.black,
     shadowOffset: {width: 0, height: '3rem'},
     shadowOpacity: 0.5,
     shadowRadius: 5,
   },
   billDetail: {
     padding: '10rem',
-    borderBottomColor: '#eee',
+    borderBottomColor: Colors.lightWhite,
     borderBottomWidth: '3rem',
   },
   billDetailItemContainer: {
@@ -74,16 +75,16 @@ const styles = EStyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     padding: '10rem',
-    backgroundColor: '#339933',
+    backgroundColor: Colors.lightGreen,
   },
   placeOrderText: {
     fontSize: '22rem',
-    color: 'white',
+    color: Colors.white,
     marginRight: '10rem',
   },
   placeOrderArrow: {
     fontSize: '22rem',
-    color: 'white',
+    color: Colors.white,
     fontWeight: '600',
   },
 });

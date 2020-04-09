@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {Colors} from '../constants/Colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import OrderDetailsScreen from '../components/OrderDetailsItem';
 import UserDetailsComponent from '../components/UserDetailsComponent';
@@ -31,7 +32,7 @@ const OrderDetails = props => {
             Expected Delivery: {stores[selectedStoreId].deliveryTime}
           </Text>
         </View>
-        <ScrollView style={{backgroundColor: 'white'}}>
+        <ScrollView style={{backgroundColor: Colors.white}}>
           <View style={styles.DetailsTopContainer}>
             <View style={styles.DetailsContainer}>
               <Text style={styles.DetailsText}>ORDER DETAILS</Text>
@@ -58,7 +59,7 @@ const OrderDetails = props => {
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#262626',
+    backgroundColor: Colors.lightGray,
   },
   content: {
     marginTop: '15rem',
@@ -66,13 +67,13 @@ const styles = EStyleSheet.create({
   },
   EstimatedDeliveryContainer: {
     marginHorizontal: '15rem',
-    borderBottomColor: 'white',
+    borderBottomColor: Colors.white,
     borderBottomWidth: '1rem',
     paddingVertical: '5rem',
     marginBottom: '15rem',
   },
   EstimatedDeliveryText: {
-    color: 'white',
+    color: Colors.white,
     fontSize: '15rem',
   },
   backArrowContainer: {
@@ -80,7 +81,7 @@ const styles = EStyleSheet.create({
   },
   backArrow: {
     fontSize: '20rem',
-    color: 'white',
+    color: Colors.white,
     fontWeight: 'bold',
   },
   DetailsTopContainer: {
@@ -88,7 +89,7 @@ const styles = EStyleSheet.create({
   },
   DetailsContainer: {
     paddingHorizontal: '10rem',
-    borderBottomColor: '#eee',
+    borderBottomColor: Colors.lightWhite,
     borderBottomWidth: '1rem',
     paddingBottom: '10rem',
   },
@@ -96,7 +97,7 @@ const styles = EStyleSheet.create({
     fontSize: '18rem',
   },
   listItem: {
-    borderBottomColor: '#eee',
+    borderBottomColor: Colors.black,
     borderBottomWidth: '1rem',
     flexDirection: 'row',
     paddingHorizontal: 20,
@@ -123,10 +124,10 @@ const styles = EStyleSheet.create({
   ingredientCounter: {
     fontSize: '16rem',
     marginHorizontal: '15rem',
-    color: '#00cc00',
+    color: Colors.black,
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     color: 'grey',
     paddingHorizontal: '15rem',
     height: '100%',
@@ -136,18 +137,18 @@ const styles = EStyleSheet.create({
   },
   billDetailOuter: {
     marginHorizontal: '10rem',
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     borderRadius: '5rem',
     marginBottom: '20rem',
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: Colors.black,
     shadowOffset: {width: 0, height: '3rem'},
     shadowOpacity: 0.5,
     shadowRadius: 5,
   },
   billDetail: {
     padding: '10rem',
-    borderBottomColor: '#eee',
+    borderBottomColor: Colors.black,
     borderBottomWidth: '3rem',
   },
   billDetailText: {
@@ -168,16 +169,16 @@ const styles = EStyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     padding: '10rem',
-    backgroundColor: '#339933',
+    backgroundColor: Colors.black,
   },
   placeOrderText: {
     fontSize: '22rem',
-    color: 'white',
+    color: Colors.white,
     marginRight: '10rem',
   },
   placeOrderArrow: {
     fontSize: '22rem',
-    color: 'white',
+    color: Colors.white,
     fontWeight: '600',
   },
   detailsNameAddPhone: {

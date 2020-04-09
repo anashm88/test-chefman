@@ -20,7 +20,7 @@ import {
 
 import _ from 'lodash';
 import HomeScreenItem from '../components/HomeScreenItem';
-import {Colors} from '../constants/Constants';
+import {Colors} from '../constants/Colors';
 
 const ItemsScreen = props => {
   const [value, onChangeText] = useState('');
@@ -76,7 +76,7 @@ const ItemsScreen = props => {
   const placeholder = {
     label: 'Select a sport...',
     value: null,
-    color: '#9EA0A4',
+    color: Colors.gray,
   };
   const sports = [
     {
@@ -130,14 +130,13 @@ const ItemsScreen = props => {
         </View>
       </View>
       <View style={styles.checkoutOuterContainer}>
-        <View style={styles.checkoutInnerContainer}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('OrderDetailsScreen')} style={styles.checkoutInnerContainer}>
           <View>
             <Text style={styles.checkoutContainerText}>
               {totalItems} items for: ${totalPrice}
             </Text>
           </View>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('OrderDetailsScreen')}
+          <View
             style={styles.checkoutTouchable}
             disabled={!totalItems}>
             <Text
@@ -147,8 +146,8 @@ const ItemsScreen = props => {
               ]}>
               Checkout
             </Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -157,7 +156,7 @@ const ItemsScreen = props => {
 const styles = EStyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#262626',
+    backgroundColor: Colors.lightGray,
   },
   content: {
     marginTop: '30rem',
@@ -165,12 +164,12 @@ const styles = EStyleSheet.create({
   },
   locationContainer: {
     marginHorizontal: '15rem',
-    borderBottomColor: 'white',
+    borderBottomColor: Colors.white,
     borderBottomWidth: '1rem',
     paddingVertical: '5rem',
   },
   locationText: {
-    color: 'white',
+    color: Colors.white,
     fontSize: '15rem',
   },
   inputContainer: {
@@ -179,8 +178,8 @@ const styles = EStyleSheet.create({
     paddingBottom: '15rem',
   },
   input: {
-    backgroundColor: 'white',
-    color: '#262626',
+    backgroundColor: Colors.white,
+    color: Colors.lightGray,
     paddingHorizontal: '15rem',
     height: '35rem',
     fontSize: '15rem',
@@ -188,11 +187,11 @@ const styles = EStyleSheet.create({
   },
   ingredientsListContainer: {
     height: '80%',
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
   },
   ingredient: {
     padding: '15rem',
-    borderBottomColor: '#eee',
+    borderBottomColor: Colors.lightWhite,
     borderBottomWidth: '0.6rem',
     flexDirection: 'row',
   },
@@ -206,7 +205,7 @@ const styles = EStyleSheet.create({
     marginHorizontal: '15rem',
     height: '50rem',
     borderRadius: '5rem',
-    backgroundColor: '#339933',
+    backgroundColor: Colors.lightGreen,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -218,7 +217,7 @@ const styles = EStyleSheet.create({
   },
   checkoutContainerText: {
     fontSize: '18rem',
-    color: 'white',
+    color: Colors.white,
     fontWeight: '600',
   },
   imageAndDetails: {
@@ -254,7 +253,7 @@ const styles = EStyleSheet.create({
   ingredientCounter: {
     fontSize: '15rem',
     marginHorizontal: '15rem',
-    color: '#00cc00',
+    color: Colors.green,
   },
   listRightItems: {
     justifyContent: 'space-around',
@@ -277,15 +276,15 @@ const pickerStyle = {
     paddingBottom: 12,
   },
   inputAndroid: {
-    color: 'white',
+    color: Colors.white,
   },
-  placeholderColor: 'white',
+  placeholderColor: Colors.white,
   underline: { borderTopWidth: 0 },
   icon: {
     position: 'absolute',
     backgroundColor: 'transparent',
     borderTopWidth: 5,
-    borderTopColor: '#00000099',
+    borderTopColor: Colors.lightGray,
     borderRightWidth: 5,
     borderRightColor: 'transparent',
     borderLeftWidth: 5,
