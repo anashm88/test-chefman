@@ -17,6 +17,8 @@ import {
   fetchStores,
   fetchCatalog,
   fetchIngredients,
+  addItemToCart,
+  removeItemFromCart,
 } from '../redux/actions/actionCreators';
 
 import _ from 'lodash';
@@ -121,8 +123,16 @@ const ItemsScreen = props => {
     let cartItem = {};
     const {price = 0, maxQuantity = 0} = props.catalog[productId] || {};
     const {quantity} = props.ingredients[productId];
-    cartItem = {price, maxQuantity, quantity};
+    cartItem = {price, maxQuantity, quantity, productId};
     cartItems[productId] = cartItem;
+  }
+
+  for (const productId in props.catalog) {
+    if (!cartItems[productId]) {
+      const quantity = 0;
+      let cartItem = {...props.catalog[productId], quantity};
+      cartItems[productId] = cartItem;
+    }
   }
 
   let priceTotal = 0;
@@ -134,6 +144,7 @@ const ItemsScreen = props => {
     }
   }
 
+  console.log('rendered');
   const renderCart = items => {
     const cartList = [];
     for (const productId in items) {
@@ -176,7 +187,8 @@ const ItemsScreen = props => {
               )}
             </View>
             <View style={styles.addSubtractIngredient}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => props.removeItemFromCart(productId)}>
                 <Image
                   style={styles.incrDecrIcon}
                   source={require('../assets/plusIcon.png')}
@@ -191,7 +203,7 @@ const ItemsScreen = props => {
                   ? '-'
                   : items[productId].quantity}
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => props.addItemToCart(productId)}>
                 <Image
                   style={styles.incrDecrIcon}
                   source={require('../assets/minusIcon.png')}
@@ -408,6 +420,8 @@ const mapDispatchToProps = dispatch =>
       fetchStores,
       fetchCatalog,
       fetchIngredients,
+      addItemToCart,
+      removeItemFromCart,
     },
     dispatch,
   );

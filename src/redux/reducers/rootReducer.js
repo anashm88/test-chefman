@@ -14,7 +14,10 @@ import {
   FETCH_INGREDIENTS_PENDING,
   FETCH_INGREDIENTS_SUCCESS,
   FETCH_INGREDIENTS_ERROR,
+  ADD_ITEM_TO_INGREDIENTS_LIST,
+  REMOVE_ITEM_FROM_INGREDIENTS_LIST,
 } from '../actions/actionTypes';
+import _ from 'lodash';
 
 const initState = {
   products: {},
@@ -28,11 +31,12 @@ const initState = {
 };
 
 const rootReducer = (state = initState, action) => {
+  let productId;
   switch (action.type) {
     case ITEM_DELETED:
       return {
         ...state,
-      }
+      };
     case FETCH_PRODUCTS_PENDING:
       return {
         ...state,
@@ -113,6 +117,61 @@ const rootReducer = (state = initState, action) => {
         ingredients: action.error,
         isLoading: false,
       };
+    case ADD_ITEM_TO_INGREDIENTS_LIST:
+      productId = action.payload.productId;
+      if (state.ingredients[productId]) {
+        let qty = state.ingredients[productId].quantity;
+        if (qty >= state.catalog[productId].maxQuantity) {
+          return {
+            ...state,
+            error: 'Max Quantity reached',
+          };
+        } else {
+          let ingredients = _.clone(state.ingredients);
+          ingredients[productId].quantity++;
+          return {
+            ...state,
+            ingredients,
+          };
+        }
+      } else {
+        if (
+          state.catalog[productId] &&
+          state.catalog[productId].maxQuantity > 0
+        ) {
+          return {
+            ...state,
+            ingredients: {
+              ...state.ingredients,
+              [productId]: {productId, quantity: 1},
+            },
+          };
+        } else {
+          return {
+            ...state,
+            error: 'Item out of stock',
+          };
+        }
+      }
+    case REMOVE_ITEM_FROM_INGREDIENTS_LIST:
+      productId = action.payload.productId;
+      if (state.ingredients[productId]) {
+        let ingredients = _.clone(state.ingredients);
+        if (state.ingredients[productId].quantity === 1) {
+          delete ingredients[productId];
+        } else {
+          ingredients[productId].quantity--;
+        }
+        return {
+          ...state,
+          ingredients,
+        };
+      } else {
+        return {
+          ...state,
+          error: "Can't remove this item",
+        };
+      }
     default:
       return state;
   }

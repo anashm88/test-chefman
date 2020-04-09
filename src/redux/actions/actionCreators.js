@@ -11,6 +11,8 @@ import {
   fetchIngredientsPending,
   fetchIngredientsSuccess,
   fetchIngredientsError,
+  addItemToIngredientsListAction,
+  removeItemFromIngredientsListAction,
 } from './actions';
 import APIService from '../../lib/apiService';
 
@@ -59,5 +61,17 @@ export const fetchIngredients = () => {
     const ingredients = await APIService.getIngredients();
     dispatch(fetchIngredientsSuccess(ingredients));
     return ingredients;
+  };
+};
+
+export const addItemToCart = productId => {
+  return async dispatch => {
+    dispatch(addItemToIngredientsListAction(productId));
+  };
+};
+
+export const removeItemFromCart = productId => {
+  return async dispatch => {
+    dispatch(removeItemFromIngredientsListAction(productId));
   };
 };

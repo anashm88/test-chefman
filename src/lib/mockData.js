@@ -240,33 +240,33 @@ export const data = {
       productId: 'P3',
       quantity: 1,
     },
-    {
-      productId: 'P4',
-      quantity: 2,
-    },
-    {
-      productId: 'P5',
-      quantity: 1,
-    },
-    {
-      productId: 'P6',
-      quantity: 4,
-    },
-    {
-      productId: 'P7',
-      quantity: 2,
-    },
-    {
-      productId: 'P8',
-      quantity: 2,
-    },
-    {
-      productId: 'P9',
-      quantity: 1,
-    },
-    {
-      productId: 'P10',
-      quantity: 2,
-    },
+    // {
+    //   productId: 'P4',
+    //   quantity: 2,
+    // },
+    // {
+    //   productId: 'P5',
+    //   quantity: 1,
+    // },
+    // {
+    //   productId: 'P6',
+    //   quantity: 4,
+    // },
+    // {
+    //   productId: 'P7',
+    //   quantity: 2,
+    // },
+    // {
+    //   productId: 'P8',
+    //   quantity: 2,
+    // },
+    // {
+    //   productId: 'P9',
+    //   quantity: 1,
+    // },
+    // {
+    //   productId: 'P10',
+    //   quantity: 2,
+    // },
   ],
 };

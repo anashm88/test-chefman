@@ -14,6 +14,8 @@ import {
   FETCH_INGREDIENTS_PENDING,
   FETCH_INGREDIENTS_SUCCESS,
   FETCH_INGREDIENTS_ERROR,
+  ADD_ITEM_TO_INGREDIENTS_LIST,
+  REMOVE_ITEM_FROM_INGREDIENTS_LIST,
 } from './actionTypes';
 
 export function itemAdded(data) {
@@ -105,5 +107,19 @@ export function fetchIngredientsError(error) {
   return {
     type: FETCH_INGREDIENTS_ERROR,
     payload: error,
+  };
+}
+
+export function addItemToIngredientsListAction(productId) {
+  return {
+    type: ADD_ITEM_TO_INGREDIENTS_LIST,
+    payload: {productId},
+  };
+}
+
+export function removeItemFromIngredientsListAction(productId) {
+  return {
+    type: REMOVE_ITEM_FROM_INGREDIENTS_LIST,
+    payload: {productId},
   };
 }
