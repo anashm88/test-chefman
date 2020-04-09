@@ -24,7 +24,7 @@ import HomeScreenItem from '../components/HomeScreenItem';
 import {Colors} from '../constants/Colors';
 
 const ItemsScreen = props => {
-  const [value, onChangeText] = useState('');
+  const [searchText, onSearchTextChange] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const {
     totalItems,
@@ -33,6 +33,7 @@ const ItemsScreen = props => {
     catalog,
     stores,
     selectedStoreId,
+    products,
   } = useSelector(state => state);
 
   const [storeId, setStoreId] = useState(selectedStoreId);
@@ -86,6 +87,10 @@ const ItemsScreen = props => {
     color: Colors.gray,
   };
 
+  const isMatchingWords = (productName, subStr) => {
+    return productName.toLowerCase().includes(subStr.toLowerCase());
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -112,8 +117,8 @@ const ItemsScreen = props => {
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
-            onChangeText={text => onChangeText(text)}
-            value={value}
+            onChangeText={text => onSearchTextChange(text)}
+            value={searchText}
             placeholder={'Search'}
           />
         </View>
@@ -121,6 +126,9 @@ const ItemsScreen = props => {
           <ScrollView>
             {Object.keys(cartItems)
               .sort()
+              .filter(pid =>
+                isMatchingWords(products[pid].productName, searchText),
+              )
               .map(pid => (
                 <HomeScreenItem
                   productId={pid}
@@ -132,15 +140,15 @@ const ItemsScreen = props => {
         </View>
       </View>
       <View style={styles.checkoutOuterContainer}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('OrderDetailsScreen')} style={styles.checkoutInnerContainer}>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('OrderDetailsScreen')}
+          style={styles.checkoutInnerContainer}>
           <View>
             <Text style={styles.checkoutContainerText}>
               {totalItems} items for: ${totalPrice}
             </Text>
           </View>
-          <View
-            style={styles.checkoutTouchable}
-            disabled={!totalItems}>
+          <View style={styles.checkoutTouchable} disabled={!totalItems}>
             <Text
               style={[
                 styles.checkoutContainerText,
@@ -281,7 +289,7 @@ const pickerStyle = {
     color: Colors.white,
   },
   placeholderColor: Colors.white,
-  underline: { borderTopWidth: 0 },
+  underline: {borderTopWidth: 0},
   icon: {
     position: 'absolute',
     backgroundColor: 'transparent',
