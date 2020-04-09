@@ -1,15 +1,21 @@
 import {Text, TextInput, View} from 'react-native';
 import React, {useState} from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Colors} from '../constants/Colors';
 import {PrimaryButton} from './PrimaryButton';
+import {updateUserDetails} from '../redux/actions/Actions';
 
 const UserDetailsComponent = () => {
   const {userDetails} = useSelector(state => state);
   const [name, setName] = useState(userDetails.name);
   const [address, setAddress] = useState(userDetails.address);
   const [phone, setPhone] = useState(userDetails.phone);
+  const dispatch = useDispatch();
+
+  const onSubmit = () => {
+    dispatch(updateUserDetails({name, address, phone}));
+  };
 
   return (
     <View style={styles.billDetailOuter}>
@@ -40,7 +46,7 @@ const UserDetailsComponent = () => {
           value={phone}
         />
       </View>
-      <PrimaryButton text={'Submit'} fullWidth={false} onPress={() => alert('User details saved')} />
+      <PrimaryButton text={'Submit'} fullWidth={false} onPress={onSubmit} />
     </View>
   );
 };

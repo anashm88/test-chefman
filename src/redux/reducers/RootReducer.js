@@ -225,7 +225,7 @@ const rootReducer = (state = initState, action) => {
     case UPDATE_USER_DETAILS:
       return {
         ...state,
-        userDetails: action.payload.userDetails,
+        userDetails: action.payload,
       };
     default:
       return state;
