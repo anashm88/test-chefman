@@ -1,6 +1,7 @@
 import {
   ITEM_ADDED,
   ITEM_SUBTRACTED,
+  ITEM_DELETED,
   FETCH_PRODUCTS_PENDING,
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_ERROR,
@@ -28,6 +29,10 @@ const initState = {
 
 const rootReducer = (state = initState, action) => {
   switch (action.type) {
+    case ITEM_DELETED:
+      return {
+        ...state,
+      }
     case FETCH_PRODUCTS_PENDING:
       return {
         ...state,

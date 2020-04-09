@@ -87,6 +87,8 @@ const tempData = [
 const ItemsScreen = props => {
   const [value, onChangeText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -117,13 +119,20 @@ const ItemsScreen = props => {
 
   for (const productId in props.ingredients) {
     let cartItem = {};
-    const {price = -1, maxQuantity = -1} = props.catalog[productId] || {};
+    const {price = 0, maxQuantity = 0} = props.catalog[productId] || {};
     const {quantity} = props.ingredients[productId];
     cartItem = {price, maxQuantity, quantity};
     cartItems[productId] = cartItem;
   }
 
-  console.log(cartItems);
+  let priceTotal = 0;
+  let itemsTotal = 0;
+  for (const productId in cartItems) {
+    priceTotal += cartItems[productId].price * cartItems[productId].quantity;
+    if (cartItems[productId].maxQuantity) {
+      itemsTotal += cartItems[productId].quantity;
+    }
+  }
 
   const renderCart = items => {
     const cartList = [];
@@ -145,26 +154,50 @@ const ItemsScreen = props => {
                 </Text>
               </View>
               <Text style={styles.ingredientAmount}>
-                $ {items[productId].price}
+                {items[productId].maxQuantity === 0 ? (
+                  <Text style={{color: '#ff6666'}}>Out of Stock</Text>
+                ) : (
+                  '$ ' + items[productId].price
+                )}
               </Text>
             </View>
           </View>
-          <View style={styles.addSubtractIngredient}>
+          <View style={styles.listRightItems}>
             <TouchableOpacity>
-              <Image
-                style={styles.incrDecrIcon}
-                source={require('../assets/plusIcon.png')}
-              />
+              <Text>x</Text>
             </TouchableOpacity>
-            <Text style={styles.ingredientCounter}>
-              {items[productId].price < 0 ? 0 : items[productId].quantity}
-            </Text>
-            <TouchableOpacity>
-              <Image
-                style={styles.incrDecrIcon}
-                source={require('../assets/minusIcon.png')}
-              />
-            </TouchableOpacity>
+            <View>
+              {items[productId].maxQuantity === 0 ? (
+                <Text />
+              ) : (
+                <Text style={[styles.ingredientAmount, {color: '#00cc00'}]}>
+                  $ {items[productId].price * items[productId].quantity}
+                </Text>
+              )}
+            </View>
+            <View style={styles.addSubtractIngredient}>
+              <TouchableOpacity>
+                <Image
+                  style={styles.incrDecrIcon}
+                  source={require('../assets/plusIcon.png')}
+                />
+              </TouchableOpacity>
+              <Text
+                style={[
+                  styles.ingredientCounter,
+                  items[productId].maxQuantity === 0 ? {color: 'grey'} : null,
+                ]}>
+                {items[productId].maxQuantity === 0
+                  ? '-'
+                  : items[productId].quantity}
+              </Text>
+              <TouchableOpacity>
+                <Image
+                  style={styles.incrDecrIcon}
+                  source={require('../assets/minusIcon.png')}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>,
       );
@@ -172,40 +205,40 @@ const ItemsScreen = props => {
     return cartList;
   };
 
-  const renderIngredients = item => {
-    return (
-      <View style={styles.ingredient}>
-        <View style={styles.imageAndDetails}>
-          <Image
-            style={styles.ingredientImage}
-            source={require('../assets/randomImage.png')}
-          />
-          <View style={styles.ingredientDetails}>
-            <View>
-              <Text style={styles.ingredientName}>{item.ingredient}</Text>
-              <Text style={styles.ingredientWeight}>{item.pack_Weight}</Text>
-            </View>
-            <Text style={styles.ingredientAmount}>$ {item.amount}/packet</Text>
-          </View>
-        </View>
-        <View style={styles.addSubtractIngredient}>
-          <TouchableOpacity>
-            <Image
-              style={styles.incrDecrIcon}
-              source={require('../assets/plusIcon.png')}
-            />
-          </TouchableOpacity>
-          <Text style={styles.ingredientCounter}>0</Text>
-          <TouchableOpacity>
-            <Image
-              style={styles.incrDecrIcon}
-              source={require('../assets/minusIcon.png')}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
+  // const renderIngredients = item => {
+  //   return (
+  //     <View style={styles.ingredient}>
+  //       <View style={styles.imageAndDetails}>
+  //         <Image
+  //           style={styles.ingredientImage}
+  //           source={require('../assets/randomImage.png')}
+  //         />
+  //         <View style={styles.ingredientDetails}>
+  //           <View>
+  //             <Text style={styles.ingredientName}>{item.ingredient}</Text>
+  //             <Text style={styles.ingredientWeight}>{item.pack_Weight}</Text>
+  //           </View>
+  //           <Text style={styles.ingredientAmount}>$ {item.amount}/packet</Text>
+  //         </View>
+  //       </View>
+  //       <View style={styles.addSubtractIngredient}>
+  //         <TouchableOpacity>
+  //           <Image
+  //             style={styles.incrDecrIcon}
+  //             source={require('../assets/plusIcon.png')}
+  //           />
+  //         </TouchableOpacity>
+  //         <Text style={styles.ingredientCounter}>0</Text>
+  //         <TouchableOpacity>
+  //           <Image
+  //             style={styles.incrDecrIcon}
+  //             source={require('../assets/minusIcon.png')}
+  //           />
+  //         </TouchableOpacity>
+  //       </View>
+  //     </View>
+  //   );
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -229,18 +262,26 @@ const ItemsScreen = props => {
           {/*  keyExtractor={data => data.id}*/}
           {/*  renderItem={({item}) => renderIngredients(item)}*/}
           {/*/>*/}
-          <ScrollView>
-            {renderCart(cartItems)}
-          </ScrollView>
+          <ScrollView>{renderCart(cartItems)}</ScrollView>
         </View>
       </View>
       <View style={styles.checkoutOuterContainer}>
         <View style={styles.checkoutInnerContainer}>
           <View>
-            <Text style={styles.checkoutContainerText}>2 items for: $5.6</Text>
+            <Text style={styles.checkoutContainerText}>
+              {itemsTotal} items for: ${priceTotal}
+            </Text>
           </View>
-          <TouchableOpacity style={styles.checkoutTouchable}>
-            <Text style={styles.checkoutContainerText}>Checkout</Text>
+          <TouchableOpacity
+            style={styles.checkoutTouchable}
+            disabled={!itemsTotal}>
+            <Text
+              style={[
+                styles.checkoutContainerText,
+                !itemsTotal ? {opacity: 0.4} : null,
+              ]}>
+              Checkout
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -340,8 +381,6 @@ const styles = EStyleSheet.create({
   },
   addSubtractIngredient: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    paddingBottom: '10rem',
   },
   incrDecrIcon: {
     width: '20rem',
@@ -350,7 +389,11 @@ const styles = EStyleSheet.create({
   ingredientCounter: {
     fontSize: '15rem',
     marginHorizontal: '15rem',
-    color: 'grey',
+    color: '#00cc00',
+  },
+  listRightItems: {
+    justifyContent: 'space-around',
+    alignItems: 'flex-end',
   },
 });
 

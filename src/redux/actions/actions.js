@@ -1,6 +1,7 @@
 import {
   ITEM_ADDED,
   ITEM_SUBTRACTED,
+  ITEM_DELETED,
   FETCH_PRODUCTS_PENDING,
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_ERROR,
@@ -21,6 +22,10 @@ export function itemAdded(data) {
 
 export function itemSubtracted(data) {
   return {type: ITEM_SUBTRACTED, payload: data};
+}
+
+export function itemDeleted(data) {
+  return {type: ITEM_DELETED, payload: data};
 }
 
 export function fetchProductsPending() {
