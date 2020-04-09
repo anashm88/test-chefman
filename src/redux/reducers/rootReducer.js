@@ -16,6 +16,7 @@ import {
   FETCH_INGREDIENTS_ERROR,
   ADD_ITEM_TO_INGREDIENTS_LIST,
   REMOVE_ITEM_FROM_INGREDIENTS_LIST,
+  DELETE_ITEM_FROM_INGREDIENTS_LIST,
 } from '../actions/actionTypes';
 import _ from 'lodash';
 
@@ -170,6 +171,17 @@ const rootReducer = (state = initState, action) => {
         return {
           ...state,
           error: "Can't remove this item",
+        };
+      }
+    case DELETE_ITEM_FROM_INGREDIENTS_LIST:
+      debugger;
+      productId = action.payload.productId;
+      if (state.ingredients[productId]) {
+        let ingredients = _.clone(state.ingredients);
+        delete ingredients[productId];
+        return {
+          ...state,
+          ingredients,
         };
       }
     default:

@@ -169,61 +169,61 @@ export const data = {
     {
       productId: 'P1',
       productName: 'Sugar',
-      productImageUrl: 'https://image.com',
+      productImageUrl: 'http://lorempixel.com/300/300/food',
       quantitySize: '100 g',
     },
     {
       productId: 'P2',
       productName: 'Cinnamon',
-      productImageUrl: 'https://image.com',
+      productImageUrl: 'http://lorempixel.com/300/300/food',
       quantitySize: '100 g',
     },
     {
       productId: 'P3',
       productName: 'Salt',
-      productImageUrl: 'https://image.com',
+      productImageUrl: 'http://lorempixel.com/300/300/food',
       quantitySize: '100 g',
     },
     {
       productId: 'P4',
       productName: 'Cucumber',
-      productImageUrl: 'https://image.com',
+      productImageUrl: 'http://lorempixel.com/300/300/food',
       quantitySize: '1 kg',
     },
     {
       productId: 'P5',
       productName: 'Apple',
-      productImageUrl: 'https://image.com',
+      productImageUrl: 'http://lorempixel.com/300/300/food',
       quantitySize: '1 kg', // or '1 pcs'
     },
     {
       productId: 'P6',
       productName: 'Pineapple',
-      productImageUrl: 'https://image.com',
+      productImageUrl: 'http://lorempixel.com/300/300/food',
       quantitySize: '1 pc',
     },
     {
       productId: 'P7',
       productName: 'Baking Soda',
-      productImageUrl: 'https://image.com',
+      productImageUrl: 'http://lorempixel.com/300/300/food',
       quantitySize: '100 g',
     },
     {
       productId: 'P8',
       productName: 'Corn Starch',
-      productImageUrl: 'https://image.com',
+      productImageUrl: 'http://lorempixel.com/300/300/food',
       quantitySize: '100 g',
     },
     {
       productId: 'P9',
       productName: 'Vinegar',
-      productImageUrl: 'https://image.com',
+      productImageUrl: 'http://lorempixel.com/300/300/food',
       quantitySize: '500 g',
     },
     {
       productId: 'P10',
       productName: 'Tomato',
-      productImageUrl: 'https://image.com',
+      productImageUrl: 'http://lorempixel.com/300/300/food',
       quantitySize: '1 kg',
     },
   ],
@@ -240,33 +240,13 @@ export const data = {
       productId: 'P3',
       quantity: 1,
     },
-    // {
-    //   productId: 'P4',
-    //   quantity: 2,
-    // },
-    // {
-    //   productId: 'P5',
-    //   quantity: 1,
-    // },
-    // {
-    //   productId: 'P6',
-    //   quantity: 4,
-    // },
-    // {
-    //   productId: 'P7',
-    //   quantity: 2,
-    // },
-    // {
-    //   productId: 'P8',
-    //   quantity: 2,
-    // },
-    // {
-    //   productId: 'P9',
-    //   quantity: 1,
-    // },
-    // {
-    //   productId: 'P10',
-    //   quantity: 2,
-    // },
+    {
+      productId: 'P4',
+      quantity: 2,
+    },
+    {
+      productId: 'P5',
+      quantity: 1,
+    },
   ],
 };

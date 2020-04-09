@@ -1,90 +1,27 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  View,
-  Text,
   SafeAreaView,
+  ScrollView,
+  Text,
   TextInput,
   TouchableOpacity,
-  FlatList,
-  ScrollView,
-  Image,
+  View,
 } from 'react-native';
 import {connect} from 'react-redux';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {bindActionCreators} from 'redux';
 import {
-  fetchProducts,
-  fetchStores,
+  addItemToCart,
+  deleteItemFromCart,
   fetchCatalog,
   fetchIngredients,
-  addItemToCart,
+  fetchProducts,
+  fetchStores,
   removeItemFromCart,
 } from '../redux/actions/actionCreators';
 
 import _ from 'lodash';
-
-const tempData = [
-  {
-    id: 1,
-    ingredient: 'Sugar',
-    pack_Weight: '200g',
-    amount: 50,
-  },
-  {
-    id: 2,
-    ingredient: 'Cinnamon',
-    pack_Weight: '200g',
-    amount: 50,
-  },
-  {
-    id: 3,
-    ingredient: 'Salt',
-    pack_Weight: '200g',
-    amount: 50,
-  },
-  {
-    id: 4,
-    ingredient: 'Cucumber',
-    pack_Weight: '200g',
-    amount: 50,
-  },
-  {
-    id: 5,
-    ingredient: 'Banana',
-    pack_Weight: '200g',
-    amount: 50,
-  },
-  {
-    id: 6,
-    ingredient: 'Apple',
-    pack_Weight: '200g',
-    amount: 50,
-  },
-  {
-    id: 7,
-    ingredient: 'Baking Soda',
-    pack_Weight: '200g',
-    amount: 50,
-  },
-  {
-    id: 8,
-    ingredient: 'Corn Starch',
-    pack_Weight: '200g',
-    amount: 50,
-  },
-  {
-    id: 9,
-    ingredient: 'Vinegar',
-    pack_Weight: '200g',
-    amount: 50,
-  },
-  {
-    id: 10,
-    ingredient: 'Tomato',
-    pack_Weight: '200g',
-    amount: 50,
-  },
-];
+import HomeScreenItem from './HomeScreenItem';
 
 const ItemsScreen = props => {
   const [value, onChangeText] = useState('');
@@ -144,80 +81,7 @@ const ItemsScreen = props => {
     }
   }
 
-  console.log('rendered');
-  const renderCart = items => {
-    const cartList = [];
-    for (const productId in items) {
-      cartList.push(
-        <View style={styles.ingredient}>
-          <View style={styles.imageAndDetails}>
-            <Image
-              style={styles.ingredientImage}
-              source={require('../assets/randomImage.png')}
-            />
-            <View style={styles.ingredientDetails}>
-              <View>
-                <Text style={styles.ingredientName}>
-                  {props.products[productId].productName}
-                </Text>
-                <Text style={styles.ingredientWeight}>
-                  {props.products[productId].quantitySize}
-                </Text>
-              </View>
-              <Text style={styles.ingredientAmount}>
-                {items[productId].maxQuantity === 0 ? (
-                  <Text style={{color: '#ff6666'}}>Out of Stock</Text>
-                ) : (
-                  '$ ' + items[productId].price
-                )}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.listRightItems}>
-            <TouchableOpacity>
-              <Text>x</Text>
-            </TouchableOpacity>
-            <View>
-              {items[productId].maxQuantity === 0 ? (
-                <Text />
-              ) : (
-                <Text style={[styles.ingredientAmount, {color: '#00cc00'}]}>
-                  $ {items[productId].price * items[productId].quantity}
-                </Text>
-              )}
-            </View>
-            <View style={styles.addSubtractIngredient}>
-              <TouchableOpacity
-                onPress={() => props.removeItemFromCart(productId)}>
-                <Image
-                  style={styles.incrDecrIcon}
-                  source={require('../assets/plusIcon.png')}
-                />
-              </TouchableOpacity>
-              <Text
-                style={[
-                  styles.ingredientCounter,
-                  items[productId].maxQuantity === 0 ? {color: 'grey'} : null,
-                ]}>
-                {items[productId].maxQuantity === 0
-                  ? '-'
-                  : items[productId].quantity}
-              </Text>
-              <TouchableOpacity onPress={() => props.addItemToCart(productId)}>
-                <Image
-                  style={styles.incrDecrIcon}
-                  source={require('../assets/minusIcon.png')}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>,
-      );
-    }
-    return cartList;
-  };
-
-  // const renderIngredients = item => {
+  // const renderHomeScreenItem = productId => {
   //   return (
   //     <View style={styles.ingredient}>
   //       <View style={styles.imageAndDetails}>
@@ -227,26 +91,65 @@ const ItemsScreen = props => {
   //         />
   //         <View style={styles.ingredientDetails}>
   //           <View>
-  //             <Text style={styles.ingredientName}>{item.ingredient}</Text>
-  //             <Text style={styles.ingredientWeight}>{item.pack_Weight}</Text>
+  //             <Text style={styles.ingredientName}>
+  //               {props.products[productId].productName}
+  //             </Text>
+  //             <Text style={styles.ingredientWeight}>
+  //               {props.products[productId].quantitySize}
+  //             </Text>
   //           </View>
-  //           <Text style={styles.ingredientAmount}>$ {item.amount}/packet</Text>
+  //           <Text style={styles.ingredientAmount}>
+  //             {cartItems[productId].maxQuantity === 0 ? (
+  //               <Text style={{color: '#ff6666'}}>Out of Stock</Text>
+  //             ) : (
+  //               '$ ' + cartItems[productId].price
+  //             )}
+  //           </Text>
   //         </View>
   //       </View>
-  //       <View style={styles.addSubtractIngredient}>
-  //         <TouchableOpacity>
-  //           <Image
-  //             style={styles.incrDecrIcon}
-  //             source={require('../assets/plusIcon.png')}
-  //           />
-  //         </TouchableOpacity>
-  //         <Text style={styles.ingredientCounter}>0</Text>
-  //         <TouchableOpacity>
-  //           <Image
-  //             style={styles.incrDecrIcon}
-  //             source={require('../assets/minusIcon.png')}
-  //           />
-  //         </TouchableOpacity>
+  //       <View style={styles.listRightItems}>
+  //         {cartItems[productId].quantity > 0 ? (
+  //           <TouchableOpacity
+  //             onPress={() => props.deleteItemFromCart(productId)}>
+  //             <Text>x</Text>
+  //           </TouchableOpacity>
+  //         ) : null}
+  //         <View>
+  //           {cartItems[productId].maxQuantity === 0 ? (
+  //             <Text />
+  //           ) : cartItems[productId].quantity > 0 ? (
+  //             ((
+  //               <Text style={[styles.ingredientAmount, {color: '#00cc00'}]}>
+  //                 $ {cartItems[productId].price * cartItems[productId].quantity}
+  //               </Text>
+  //             ): null)
+  //           ) : null}
+  //         </View>
+  //         <View style={styles.addSubtractIngredient}>
+  //           <TouchableOpacity
+  //             onPress={() => props.removeItemFromCart(productId)}>
+  //             <Image
+  //               style={styles.incrDecrIcon}
+  //               source={require('../assets/plusIcon.png')}
+  //             />
+  //           </TouchableOpacity>
+  //           <Text
+  //             style={[
+  //               styles.ingredientCounter,
+  //               cartItems[productId].maxQuantity === 0 ? {color: 'grey'} : null,
+  //             ]}>
+  //             {cartItems[productId].quantity === 0 &&
+  //             cartItems[productId].maxQuantity === 0
+  //               ? '-'
+  //               : cartItems[productId].quantity}
+  //           </Text>
+  //           <TouchableOpacity onPress={() => props.addItemToCart(productId)}>
+  //             <Image
+  //               style={styles.incrDecrIcon}
+  //               source={require('../assets/minusIcon.png')}
+  //             />
+  //           </TouchableOpacity>
+  //         </View>
   //       </View>
   //     </View>
   //   );
@@ -269,12 +172,15 @@ const ItemsScreen = props => {
           />
         </View>
         <View style={styles.ingredientsListContainer}>
-          {/*<FlatList*/}
-          {/*  data={tempData}*/}
-          {/*  keyExtractor={data => data.id}*/}
-          {/*  renderItem={({item}) => renderIngredients(item)}*/}
-          {/*/>*/}
-          <ScrollView>{renderCart(cartItems)}</ScrollView>
+          <ScrollView>
+            {Object.keys(cartItems).map(pid => (
+              <HomeScreenItem
+                productId={pid}
+                quantity={cartItems[pid].quantity}
+                key={pid}
+              />
+            ))}
+          </ScrollView>
         </View>
       </View>
       <View style={styles.checkoutOuterContainer}>
@@ -422,6 +328,7 @@ const mapDispatchToProps = dispatch =>
       fetchIngredients,
       addItemToCart,
       removeItemFromCart,
+      deleteItemFromCart,
     },
     dispatch,
   );

@@ -12,7 +12,7 @@ import {
   fetchIngredientsSuccess,
   fetchIngredientsError,
   addItemToIngredientsListAction,
-  removeItemFromIngredientsListAction,
+  removeItemFromIngredientsListAction, deleteItemFromCartAction,
 } from './actions';
 import APIService from '../../lib/apiService';
 
@@ -75,3 +75,9 @@ export const removeItemFromCart = productId => {
     dispatch(removeItemFromIngredientsListAction(productId));
   };
 };
+
+export const deleteItemFromCart = productId => {
+  return async dispatch => {
+    dispatch(deleteItemFromCartAction(productId));
+  };
+}

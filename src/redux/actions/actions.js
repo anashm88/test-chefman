@@ -16,6 +16,7 @@ import {
   FETCH_INGREDIENTS_ERROR,
   ADD_ITEM_TO_INGREDIENTS_LIST,
   REMOVE_ITEM_FROM_INGREDIENTS_LIST,
+  DELETE_ITEM_FROM_INGREDIENTS_LIST,
 } from './actionTypes';
 
 export function itemAdded(data) {
@@ -120,6 +121,13 @@ export function addItemToIngredientsListAction(productId) {
 export function removeItemFromIngredientsListAction(productId) {
   return {
     type: REMOVE_ITEM_FROM_INGREDIENTS_LIST,
+    payload: {productId},
+  };
+}
+
+export function deleteItemFromCartAction(productId) {
+  return {
+    type: DELETE_ITEM_FROM_INGREDIENTS_LIST,
     payload: {productId},
   };
 }
