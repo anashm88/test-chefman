@@ -70,7 +70,7 @@ const HomeScreenItem = ({productId, quantity}) => {
           <TouchableOpacity onPress={() => removeItemFromCart(productId)}>
             <Image
               style={styles.incrDecrIcon}
-              source={require('../assets/plusIcon.png')}
+              source={require('../assets/minusIcon.png')}
             />
           </TouchableOpacity>
           <Text
@@ -83,7 +83,7 @@ const HomeScreenItem = ({productId, quantity}) => {
           <TouchableOpacity onPress={() => addItemToCart(productId)}>
             <Image
               style={styles.incrDecrIcon}
-              source={require('../assets/minusIcon.png')}
+              source={require('../assets/plusIcon.png')}
             />
           </TouchableOpacity>
         </View>
