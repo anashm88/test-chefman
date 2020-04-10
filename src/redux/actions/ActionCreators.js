@@ -1,6 +1,4 @@
 import {
-  addItemToIngredientsListAction,
-  deleteItemFromCartAction,
   fetchCatalogPending,
   fetchCatalogSuccess,
   fetchIngredientsPending,
@@ -9,7 +7,6 @@ import {
   fetchProductsSuccess,
   fetchStoresPending,
   fetchStoresSuccess,
-  removeItemFromIngredientsListAction,
 } from './Actions';
 import ApiService from '../../lib/ApiService';
 
